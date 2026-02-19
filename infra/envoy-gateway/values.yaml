@@ -49,7 +49,7 @@ deployment:
       allowPrivilegeEscalation: false
       capabilities:
         drop:
-        - ALL
+          - ALL
       privileged: false
       runAsNonRoot: true
       runAsGroup: 65532
@@ -74,8 +74,8 @@ deployment:
   pod:
     affinity: {}
     annotations:
-      prometheus.io/scrape: 'true'
-      prometheus.io/port: '19001'
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "19001"
     labels: {}
     topologySpreadConstraints: []
     tolerations: []
@@ -98,7 +98,7 @@ hpa:
   behavior: {}
 
 config:
-# -- EnvoyGateway configuration. Visit https://gateway.envoyproxy.io/docs/api/extension_types/#envoygateway to view all options.
+  # -- EnvoyGateway configuration. Visit https://gateway.envoyproxy.io/docs/api/extension_types/#envoygateway to view all options.
   envoyGateway:
     gateway:
       controllerName: gateway.envoyproxy.io/gatewayclass-controller
@@ -130,7 +130,7 @@ certgen:
       allowPrivilegeEscalation: false
       capabilities:
         drop:
-        - ALL
+          - ALL
       privileged: false
       readOnlyRootFilesystem: true
       runAsNonRoot: true
@@ -145,4 +145,3 @@ certgen:
 topologyInjector:
   enabled: true
   annotations: {}
-
