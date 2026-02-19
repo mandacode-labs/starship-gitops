@@ -1,0 +1,44 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: eg
+  namespace: default
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.mandacode.com"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: mandacode-tls
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-console-exact
+      protocol: HTTPS
+      port: 443
+      hostname: "console.mandacode.com"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: mandacode-tls-console
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-console
+      protocol: HTTPS
+      port: 443
+      hostname: "*.console.mandacode.com"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: mandacode-tls-console
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: All
