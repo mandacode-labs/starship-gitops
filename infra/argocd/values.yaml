@@ -205,7 +205,7 @@ configs:
 
     # -- Enable local admin user
     ## Ref: https://argo-cd.readthedocs.io/en/latest/faq/#how-to-disable-admin-user
-    admin.enabled: true
+    admin.enabled: false
 
     # -- Timeout to discover if a new manifests version got published to the repository
     timeout.reconciliation: 180s
@@ -218,24 +218,28 @@ configs:
     statusbadge.enabled: false
 
     # Dex configuration
-    # dex.config: |
-    #   connectors:
-    #     # GitHub example
-    #     - type: github
-    #       id: github
-    #       name: GitHub
-    #       config:
-    #         clientID: aabbccddeeff00112233
-    #         clientSecret: $dex.github.clientSecret # Alternatively $<some_K8S_secret>:dex.github.clientSecret
-    #         orgs:
-    #         - name: your-github-org
+    dex.config: |
+      connectors:
+        - type: oidc
+          id: google
+          name: Google
+          config:
+            clientID: <your-client-id>
+            clientSecret: <your-client-secret>
 
     # OIDC configuration as an alternative to dex (optional).
+  
+    url: https://argocd.console.mandacode.com
+
     # oidc.config: |
-    #   name: AzureAD
-    #   issuer: https://login.microsoftonline.com/TENANT_ID/v2.0
-    #   clientID: aaaabbbbccccddddeee
-    #   clientSecret: $oidc.azuread.clientSecret
+    #   name: Google
+    #   issuer: https://accounts.google.com
+    #   clientID: <your-client-id>
+    #   clientSecret: <your-client-secret>
+    #   requestedScopes:
+    #     - openid
+    #     - profile
+    #     - email
     #   # Optional: set to true to use Azure Workload Identity instead of clientSecret
     #   azure:
     #     useWorkloadIdentity: false
@@ -430,6 +434,8 @@ configs:
 
     # -- Annotations to be added to the argocd-cmd-params-cm ConfigMap
     annotations: {}
+
+    server.insecure: true
 
     # You can customize parameters by adding parameters here.
     # (e.g.)
@@ -2625,7 +2631,7 @@ server:
   # Refer to https://gateway-api.sigs.k8s.io/implementations/ for controller-specific details
   httproute:
     # -- Enable HTTPRoute resource for Argo CD server (Gateway API)
-    enabled: false
+    enabled: true
     # -- Additional HTTPRoute labels
     labels: {}
     # -- Additional HTTPRoute annotations
@@ -2633,13 +2639,17 @@ server:
     # -- Gateway API parentRefs for the HTTPRoute
     ## Must reference an existing Gateway
     # @default -- `[]` (See [values.yaml])
-    parentRefs: []
+    parentRefs:
+      - name: eg
+        namespace: default
+        sectionName: https-console
       # - name: example-gateway
       #   namespace: example-gateway-namespace
       #   sectionName: https
     # -- List of hostnames for the HTTPRoute
     # @default -- `[]` (See [values.yaml])
-    hostnames: []
+    hostnames:
+      - argocd.console.mandacode.com
       # - argocd.example.com
     # -- HTTPRoute rules configuration
     # @default -- `[]` (See [values.yaml])
