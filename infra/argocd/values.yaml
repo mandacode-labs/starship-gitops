@@ -224,6 +224,7 @@ configs:
           id: google
           name: Google
           config:
+            issuer: https://accounts.google.com
             clientID: <your-client-id>
             clientSecret: <your-client-secret>
 
