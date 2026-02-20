@@ -14,11 +14,11 @@ spec:
         valueFiles:
           - $values/infra/keycloak/db/values.yaml
 
-    # # Reference for values file
-    # - repoURL: https://github.com/mandacode-lab/starship-gitops.git
-    #   targetRevision: main
-    #   ref: values
-    #
+    # Reference for values file
+    - repoURL: https://github.com/mandacode-lab/starship-gitops.git
+      targetRevision: main
+      ref: values
+
     - repoURL: https://github.com/mandacode-lab/starship-gitops.git
       targetRevision: main
       ref: values
