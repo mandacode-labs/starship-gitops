@@ -14,6 +14,8 @@ spec:
     passwordSecret:
       name: db-user-app
       key: password
+  http:
+    enabled: true
   hostname:
     hostname: idp.mandacode.com
   proxy:

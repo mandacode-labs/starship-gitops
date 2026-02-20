@@ -21,7 +21,6 @@ spec:
 
     - repoURL: https://github.com/mandacode-lab/starship-gitops.git
       targetRevision: main
-      ref: values
       path: infra/keycloak
 
   destination:
@@ -33,4 +32,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
