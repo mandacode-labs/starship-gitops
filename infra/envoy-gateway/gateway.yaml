@@ -42,3 +42,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-oidc-starship
+      protocol: HTTPS
+      port: 443
+      hostname: "oidc.starship.mandacode.com"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: tls-oidc-starship
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: All
