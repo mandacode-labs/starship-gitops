@@ -17,6 +17,8 @@ spec:
   ingress:
     enabled: false
   http:
-    httpEnabled: false
+    httpEnabled: true
+  hostname:
+    hostname: https://idp.mandacode.com
   proxy:
     headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
