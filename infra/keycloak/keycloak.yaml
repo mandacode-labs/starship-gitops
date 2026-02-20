@@ -19,6 +19,6 @@ spec:
   http:
     httpEnabled: true
   hostname:
-    hostname: https://idp.mandacode.com
+    hostname: idp.mandacode.com
   proxy:
     headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
