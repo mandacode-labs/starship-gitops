@@ -17,6 +17,8 @@ zfs-localpv:
     csi:
       volumeSnapshots:
         enabled: false
+  lvmNode:
+    kubeletDir: "/var/lib/kubelet"
 
 # Refer to https://github.com/openebs/lvm-localpv/blob/lvm-localpv-1.6.2/deploy/helm/charts/values.yaml for complete set of values.
 lvm-localpv:
@@ -26,6 +28,8 @@ lvm-localpv:
     csi:
       volumeSnapshots:
         enabled: false
+  lvmNode:
+    kubeletDir: "/var/lib/kubelet"
 
 # Refer to https://github.com/openebs/rawfile-localpv/blob/v0.11.0/deploy/helm/rawfile-localpv/values.yaml for complete set of values.
 rawfile-localpv:
@@ -91,7 +95,7 @@ engines:
       enabled: false
   replicated:
     mayastor:
-      enabled: true
+      enabled: false
 
 loki:
   enabled: true
