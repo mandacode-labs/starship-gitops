@@ -5,3 +5,4 @@ resources:
   - namespace.yaml
   - project.yaml
   - app.yaml
+  - lvm-sc.yaml
