@@ -8,6 +8,8 @@ spec:
   db:
     vendor: postgres
     host: "keycloak-cluster-rw.keycloak.svc.cluster.local"
+    database: keycloak
+    port: 5432
     usernameSecret:
       name: db-user-app
       key: username
