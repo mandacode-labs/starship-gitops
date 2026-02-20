@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: openebs
+  namespace: argocd
+spec:
+  description: OpenEBS Storage Project
+  destinations:
+    - name: in-cluster
+      namespace: openebs
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  sourceRepos:
+    - https://openebs.github.io/openebs
+    - https://github.com/mandacode-lab/starship-gitops.git
