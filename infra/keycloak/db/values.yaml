@@ -570,7 +570,7 @@ replica:
 databases:
   - name: keycloak # -- Name of the database to be created.
     ensure: present # -- Ensure the PostgreSQL database is present or absent - defaults to "present".
-    owner: db-user-app # -- Owner of the database
+    owner: app # -- Owner of the database
     encoding: UTF8 # -- Maps to the ENCODING parameter.
     connectionLimit: -1 # -- Maps to the CONNECTION LIMIT parameter. -1 (the default) means no limit.
   # - name: app                      # -- Name of the database to be created.
