@@ -10,7 +10,7 @@ spec:
   description: Metrics Server project
   destinations:
     - name: in-cluster
-      namespace: metrics-server
+      namespace: kube-system
       server: https://kubernetes.default.svc
   namespaceResourceWhitelist:
     - group: "*"
