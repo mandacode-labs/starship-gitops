@@ -6,13 +6,6 @@ metadata:
 spec:
   project: keycloak
   sources:
-    # Helm chart for Keycloak
-    - repoURL: https://charts.bitnami.com/bitnami
-      chart: keycloak
-      targetRevision: 25.2.0
-      helm:
-        valueFiles:
-          - $values/infra/keycloak/values.yaml
     # Helm chart for CloudNativePG cluster (keycloak database)
     - repoURL: https://cloudnative-pg.github.io/charts
       chart: cluster
@@ -20,10 +13,17 @@ spec:
       helm:
         valueFiles:
           - $values/infra/keycloak/db/values.yaml
-    # Reference for values file
+
+    # # Reference for values file
+    # - repoURL: https://github.com/mandacode-lab/starship-gitops.git
+    #   targetRevision: main
+    #   ref: values
+    #
     - repoURL: https://github.com/mandacode-lab/starship-gitops.git
       targetRevision: main
       ref: values
+      path: infra/keycloak
+
   destination:
     server: https://kubernetes.default.svc
     namespace: keycloak
