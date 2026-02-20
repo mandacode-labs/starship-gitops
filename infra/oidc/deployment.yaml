@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jwks
+  namespace: default
+data:
+  jwks.json: |
+    {
+      "kty": "RSA",
+      "use": "sig",
+      "key_ops": [
+        "verify"
+      ],
+      "alg": "RS256",
+      "kid": "035f4f25-d4f7-41a6-97f1-a4006da0ab8e",
+      "n": "v6SbFkrB8MXCerg-Yn0lLEzJqlKh77P7L21jw6JiyuJZaecdGm-8QGRy5I6Mje-2636S77CgoMLvzbREzilsmkWPF26n3Cee85x6uxd-MTvOaLezGQKSdeaFhNXuJexDiQwdxQ43-tJFeGwUaTrZrb-OpN9fBoyyEZwhVon86Hp1RrJsE6o0Hre1HorNpxIAbqI4ZzDZSyGc0ylAevkJ7lC8XSiVT9Cxl9voO_OGT4V-HK2I-lx2TPw59RLZR-AUyRhjCuaVnSeGNtOmBZtc3e8De-7VhbgrwvLQUX7Czw0ANm1hu24_RaN6IzPsZh8QM6EFj0Pp1NqrsJSaOLT5RctakUXFHZQ0Czz5nb540MO-dYJecQ2nWBYnB77Zbhb5L2wSHDBHM4XPIFJTLfVKjvrIxC3I7_VzCtCR16Lt6gxc5hyX-68k_bUA-rlQmho2fB6zvuu1-y7CZpiX3n5-7l73ECXAAWYNiikRVEFZDnqE39D_KQhUhztTdkeeKG6WNb3zkmAsk6qP0pgs_Iew7ZLTxdWQxAYU0m052Kgq0hnoqMLSvrRm4l3Lh8eehJrNcDditXYP89ipXhwYBXl4J6JPIYtZ1cN1_XSOjWZSNw8_sIVnRXusJQSM5FEyAs9xmqo4yfDcD8sMy26uTvoDvNlR8E-m4ZiPzkW8aC9WgVs",
+      "e": "AQAB"
+    }
+
+  openid-configuration.json: |
+    {
+      "issuer": "https://oidc.starship.mandacode.com",
+      "jwks_uri": "https://oidc.starship.mandacode.com/.well-known/jwks.json",
+      "response_types_supported": ["id_token"],
+      "subject_types_supported": ["public"],
+      "id_token_signing_alg_values_supported": ["RS256"],
+      "scopes_supported": ["openid", "email", "profile"]
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oidc-provider
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oidc-provider
+  template:
+    metadata:
+      labels:
+        app: oidc-provider
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: jwks
+              mountPath: /usr/share/nginx/html/.well-known
+      volumes:
+        - name: jwks
+          configMap:
+            name: jwks
+            items:
+              - key: jwks.json
+                path: jwks.json
+              - key: openid-configuration.json
+                path: openid-configuration
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oidc-provider
+  namespace: default
+spec:
+  selector:
+    app: oidc-provider
+  ports:
+    - port: 80
+      targetPort: 80
