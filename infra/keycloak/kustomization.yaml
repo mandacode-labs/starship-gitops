@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - project.yaml
   - app.yaml
-  - user.yaml
-  - db/user.yaml
+  - users.yaml
+  - db/users.yaml
