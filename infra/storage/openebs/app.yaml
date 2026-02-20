@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: openebs
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: openebs
   sources:
