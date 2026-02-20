@@ -173,12 +173,13 @@ serviceAccount:
   # -- Automounts the service account token in all containers of the pod
   automount: true
   # -- Annotations to add to the service account.
-  annotations: {}
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::273216125096:role/ESOSecretsManager"
   # -- Extra Labels to add to the service account.
   extraLabels: {}
   # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template.
-  name: ""
+  name: "eso-irsa"
 
 rbac:
   # -- Specifies whether role and rolebinding resources should be created.
@@ -218,7 +219,7 @@ extraContainers: []
 # -- Annotations to add to Deployment
 deploymentAnnotations: {}
 
- # -- Set deployment strategy
+  # -- Set deployment strategy
 strategy: {}
 
 # -- Annotations to add to Pod
@@ -264,7 +265,7 @@ serviceMonitor:
   # - failIfMissing
   # - alwaysRender
   # @schema
-  renderMode: skipIfMissing   # @schema enum: [skipIfMissing, failIfMissing, alwaysRender]
+  renderMode: skipIfMissing # @schema enum: [skipIfMissing, failIfMissing, alwaysRender]
 
   # -- namespace where you want to install ServiceMonitors
   namespace: ""
@@ -300,7 +301,6 @@ serviceMonitor:
   #   action: replace
 
 metrics:
-
   listen:
     port: 8080
     secure:
@@ -382,7 +382,7 @@ priorityClassName: ""
 # -- Pod disruption budget - for more details see https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
 podDisruptionBudget:
   enabled: false
-  minAvailable: 1    # @schema type:[integer, string]
+  minAvailable: 1 # @schema type:[integer, string]
   nameOverride: ""
   # maxUnavailable: "50%"
 
@@ -507,12 +507,11 @@ webhook:
   # -- Pod disruption budget - for more details see https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
   podDisruptionBudget:
     enabled: false
-    minAvailable: 1    # @schema type:[integer, string]
+    minAvailable: 1 # @schema type:[integer, string]
     nameOverride: ""
     # maxUnavailable: "50%"
 
   metrics:
-
     listen:
       port: 8080
 
@@ -526,13 +525,11 @@ webhook:
       # -- Additional service annotations
       annotations: {}
 
-
   readinessProbe:
     # -- Address for readiness probe
     address: ""
     # -- ReadinessProbe port for kubelet
     port: 8081
-
 
     ## -- Extra environment variables to add to container.
   extraEnv: []
@@ -561,7 +558,8 @@ webhook:
   podLabels: {}
 
   podSecurityContext:
-    enabled: true
+    enabled:
+      true
       # fsGroup: 2000
 
   securityContext:
@@ -577,9 +575,9 @@ webhook:
       type: RuntimeDefault
 
   resources: {}
-      # requests:
-      #   cpu: 10m
-      #   memory: 32Mi
+    # requests:
+    #   cpu: 10m
+    #   memory: 32Mi
 
   # -- Manage the service through which the webhook is reached.
   service:
@@ -614,7 +612,7 @@ certController:
     flavour: ""
   imagePullSecrets: []
   rbac:
-  # -- Specifies whether role and rolebinding resources should be created.
+    # -- Specifies whether role and rolebinding resources should be created.
     create: true
   serviceAccount:
     # -- Specifies whether a service account should be created.
@@ -654,12 +652,11 @@ certController:
   # -- Pod disruption budget - for more details see https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
   podDisruptionBudget:
     enabled: false
-    minAvailable: 1    # @schema type:[integer, string]
+    minAvailable: 1 # @schema type:[integer, string]
     nameOverride: ""
     # maxUnavailable: "50%"
 
   metrics:
-
     listen:
       port: 8080
 
@@ -711,7 +708,8 @@ certController:
   podLabels: {}
 
   podSecurityContext:
-    enabled: true
+    enabled:
+      true
       # fsGroup: 2000
 
   securityContext:
@@ -727,9 +725,9 @@ certController:
       type: RuntimeDefault
 
   resources: {}
-      # requests:
-      #   cpu: 10m
-      #   memory: 32Mi
+    # requests:
+    #   cpu: 10m
+    #   memory: 32Mi
 
 # -- Specifies `dnsPolicy` to deployment
 dnsPolicy: ClusterFirst
@@ -742,4 +740,3 @@ hostAliases: []
 
 # -- Any extra pod spec on the deployment
 podSpecExtra: {}
-
