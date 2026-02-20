@@ -7,7 +7,7 @@ spec:
   instances: 1
   db:
     vendor: postgres
-    host: "cnpg-cluster-keycloak-rw.keycloak.svc.cluster.local"
+    host: "keycloak-cluster-rw.keycloak.svc.cluster.local"
     usernameSecret:
       name: db-user-app
       key: username
