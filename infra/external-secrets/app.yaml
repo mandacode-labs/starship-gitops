@@ -9,10 +9,10 @@ spec:
     # Helm chart for External Secrets Operator
     - repoURL: https://charts.external-secrets.io
       chart: external-secrets
-      targetRevision: 1.2.0
+      targetRevision: 2.0.0
       helm:
         valueFiles:
-          - $values/infra/eso/values.yaml
+          - $values/infra/external-secrets/values.yaml
     # Reference for values file
     - repoURL: https://github.com/mandacode-lab/starship-gitops.git
       targetRevision: main
