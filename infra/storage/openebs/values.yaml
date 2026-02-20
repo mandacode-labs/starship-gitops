@@ -89,7 +89,7 @@ engines:
     lvm:
       enabled: true
     zfs:
-      enabled: true
+      enabled: false
     rawfile:
       # Disabled by default since rawfile is not marked as stable yet.
       enabled: false
@@ -98,7 +98,7 @@ engines:
       enabled: false
 
 loki:
-  enabled: true
+  enabled: false
   # NOTE: For all possible storage options for loki, check https://github.com/openebs/openebs/blob/HEAD/charts/loki-storage.md
   # Configuration for loki's localpv hostpath storage class.
   localpvScConfig:
@@ -228,7 +228,7 @@ loki:
       repository: docker.io/kiwigrid/k8s-sidecar
 
 alloy:
-  enabled: true
+  enabled: false
 
   logging_config:
     # Enable debugging on alloy components.
