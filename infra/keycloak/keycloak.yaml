@@ -25,8 +25,8 @@ spec:
   proxy:
     headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
   features:
-    disabled:
-      - admin
+    # disabled:
+    #   - admin
   resources:
     requests:
       cpu: 500m
