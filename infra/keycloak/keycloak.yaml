@@ -14,9 +14,9 @@ spec:
     passwordSecret:
       name: db-user-app
       key: password
+  ingress:
+    enabled: false
   http:
-    enabled: true
-  hostname:
-    hostname: idp.mandacode.com
+    httpEnabled: false
   proxy:
     headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
