@@ -1,7 +1,7 @@
 # -- Override the name of the chart
 nameOverride: ""
 # -- Override the full name of the chart
-fullnameOverride: ""
+fullnameOverride: "keycloak-cnpg-cluster"
 # -- Override the namespace of the chart
 namespaceOverride: ""
 
