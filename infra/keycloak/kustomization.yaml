@@ -6,3 +6,4 @@ resources:
   - crds/
   - operator/
   - keycloak.yaml
+  - httproute.yaml
