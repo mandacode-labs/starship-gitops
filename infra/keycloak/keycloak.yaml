@@ -4,7 +4,6 @@ metadata:
   name: keycloak
   namespace: keycloak
 spec:
-  instances: 1
   db:
     vendor: postgres
     host: "keycloak-cnpg-cluster-rw.keycloak.svc.cluster.local"
@@ -25,8 +24,8 @@ spec:
   proxy:
     headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
   features:
-    # disabled:
-    #   - admin
+    disabled:
+      - admin
   resources:
     requests:
       cpu: 1
