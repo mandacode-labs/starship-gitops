@@ -25,7 +25,6 @@ spec:
     headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
   features:
     enabled:
-      - token-exchange-standard
   resources:
     requests:
       cpu: 1
