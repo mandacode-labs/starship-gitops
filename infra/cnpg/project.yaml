@@ -17,4 +17,4 @@ spec:
       kind: "*"
   sourceRepos:
     - https://cloudnative-pg.github.io/charts
-    - https://github.com/mandacode-lab/starship-gitops.git
+    - https://github.com/mandacode-labs/starship-gitops.git
