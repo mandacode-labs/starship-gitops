@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: global-cnpg
+  namespace: argocd
+spec:
+  project: global-cnpg
+  sources:
+    # Helm chart for CloudNativePG cluster
+    - repoURL: https://cloudnative-pg.github.io/charts
+      chart: cluster
+      targetRevision: 0.5.0
+      helm:
+        valueFiles:
+          - $values/apps/global-cnpg/values.yaml
+
+    # Reference for values file
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      ref: values
+
+    # Kustomization for ExternalSecret resources
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      path: apps/global-cnpg
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: global-database
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
