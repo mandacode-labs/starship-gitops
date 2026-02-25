@@ -17,3 +17,4 @@ spec:
       kind: "*"
   sourceRepos:
     - https://github.com/mandacode-labs/starship-gitops.git
+    - https://github.com/mandacode-labs/traditional-saju-backend.git
