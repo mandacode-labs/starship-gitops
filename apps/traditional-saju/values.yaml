@@ -7,7 +7,7 @@ app:
     targetPort: 3000
   image:
     repository: "273216125096.dkr.ecr.ap-northeast-2.amazonaws.com/traditional-saju/app"
-    tag: "0.2.0"
+    tag: "0.2.1"
     pullPolicy: IfNotPresent
     pullSecrets:
       - name: "ecr-cred"
@@ -91,7 +91,7 @@ migration:
   enabled: true
   image:
     repository: "273216125096.dkr.ecr.ap-northeast-2.amazonaws.com/traditional-saju/migration"
-    tag: "0.2.0"
+    tag: "0.2.1"
     pullPolicy: IfNotPresent
     pullSecrets:
       - name: "ecr-cred"
