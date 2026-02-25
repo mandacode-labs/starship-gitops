@@ -10,7 +10,7 @@ app:
     tag: "0.2.0"
     pullPolicy: IfNotPresent
     pullSecrets:
-      - "ecr-cred"
+      - name: "ecr-cred"
   resources:
     limits:
       cpu: 1000m
@@ -94,7 +94,7 @@ migration:
     tag: "0.2.0"
     pullPolicy: IfNotPresent
     pullSecrets:
-      - "ecr-cred"
+      - name: "ecr-cred"
   resources:
     limits:
       cpu: 200m
