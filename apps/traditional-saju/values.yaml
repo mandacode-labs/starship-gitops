@@ -4,8 +4,7 @@ app:
     repository: "273216125096.dkr.ecr.ap-northeast-2.amazonaws.com/traditional-saju/app"
     tag: "0.2.0"
     pullPolicy: IfNotPresent
-    pullSecrets:
-      - name: "regcred"
+    pullSecrets: []
   replicaCount: 2
   service:
     type: ClusterIP
@@ -68,6 +67,7 @@ database:
     repository: "273216125096.dkr.ecr.ap-northeast-2.amazonaws.com/traditional-saju/migration"
     tag: "0.2.0"
     pullPolicy: IfNotPresent
+    pullSecrets: []
   # Set existingSecret to use external secret for credentials (username, password)
   existingSecret: "db-user"
   existingSecretKeys: # Optional: specify custom key names in existingSecret
@@ -82,11 +82,6 @@ database:
   username: "postgres"
   password: "postgres"
 
-# Database migration configuration
-migration:
-  enabled: true
-  imageName: "migration"
-  version: "0.2.0"
   resources:
     limits:
       cpu: 200m
