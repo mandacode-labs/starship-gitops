@@ -46,17 +46,13 @@ spec:
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:
                     secretKeyRef:
-                      name: $(AWS_CREDENTIAL_SECRET_NAME)
+                      name: aws-ecr-image-pull-credentials
                       key: accessKey
-                      optional: false
                 - name: AWS_SECRET_ACCESS_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: $(AWS_CREDENTIAL_SECRET_NAME)
+                      name: aws-ecr-image-pull-credentials
                       key: secretAccessKey
-                      optional: false
-                - name: AWS_CREDENTIAL_SECRET_NAME
-                  value: aws-ecr-image-pull-credentials
                 - name: AWS_REGION
                   value: ap-northeast-2
                 - name: ECR_REGISTRY
