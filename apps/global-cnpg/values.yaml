@@ -293,6 +293,13 @@ cluster:
   # already present in the database.
   # See: https://cloudnative-pg.io/documentation/current/declarative_role_management/
   roles:
+    - name: admin
+      ensure: present
+      comment: Admin user
+      login: true
+      superuser: true
+      passwordSecret:
+        name: cnpg-user-admin
     - name: traditional-saju
       ensure: present
       comment: Application user
