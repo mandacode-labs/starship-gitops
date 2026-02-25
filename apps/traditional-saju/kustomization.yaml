@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: traditional-saju
 
 resources:
-  - source-repo.yaml
   - db-user.yaml
   - keycloak-client.yaml
   - openai.yaml
