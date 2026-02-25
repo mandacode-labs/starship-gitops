@@ -20,12 +20,31 @@ spec:
                 - /bin/sh
                 - -c
                 - |
+                  set -e
+
+                  echo "Starting ECR token fetch..."
+
+                  # Validate required environment variables
+                  if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] || [ -z "$AWS_REGION" ]; then
+                    echo "ERROR: Required AWS credentials are missing"
+                    exit 1
+                  fi
+
                   # Get ECR token and save to shared volume
-                  aws ecr get-login-password \
-                    --region "$AWS_REGION" \
-                    --access-key-id "$AWS_ACCESS_KEY_ID" \
-                    --secret-access-key "$AWS_SECRET_ACCESS_KEY" \
-                    > /token/ecr-token
+                  echo "Fetching ECR token from region: $AWS_REGION"
+                  if ! aws ecr get-login-password \
+                    --region "$AWS_REGION" > /token/ecr-token 2>&1; then
+                    echo "ERROR: Failed to fetch ECR token"
+                    exit 1
+                  fi
+
+                  # Validate token is not empty
+                  if [ ! -s /token/ecr-token ]; then
+                    echo "ERROR: Received empty ECR token"
+                    exit 1
+                  fi
+
+                  echo "ECR token fetched successfully"
               env:
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:
@@ -56,8 +75,23 @@ spec:
                 - /bin/sh
                 - -c
                 - |
+                  set -e
+
                   # Read ECR token from shared volume
+                  if [ ! -f /token/ecr-token ]; then
+                    echo "ERROR: ECR token file not found. Init container may have failed."
+                    exit 1
+                  fi
+
                   ECR_TOKEN=$(cat /token/ecr-token)
+
+                  # Validate token is not empty
+                  if [ -z "$ECR_TOKEN" ]; then
+                    echo "ERROR: ECR token is empty"
+                    exit 1
+                  fi
+
+                  echo "ECR token loaded successfully"
 
                   # Get all namespaces
                   NAMESPACES=$(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}')
