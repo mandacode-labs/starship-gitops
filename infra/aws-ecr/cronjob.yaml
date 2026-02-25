@@ -4,7 +4,7 @@ metadata:
   name: aws-ecr-credential-sync
   namespace: ecr-cred
 spec:
-  schedule: "0 */12 * * *"  # Every 12 hours
+  schedule: "0 */12 * * *" # Every 12 hours
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -20,8 +20,8 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  # Get ECR token and encode to base64
-                  ECR_TOKEN=$(aws ecr get-login-password --region ap-northeast-2 \
+                  # Get ECR token
+                  ECR_TOKEN=$(aws ecr get-login-password --region "$AWS_REGION" \
                     --access-key-id "$AWS_ACCESS_KEY_ID" \
                     --secret-access-key "$AWS_SECRET_ACCESS_KEY")
 
@@ -30,12 +30,12 @@ spec:
 
                   # Create/regenerate secret in each namespace
                   for ns in $NAMESPACES; do
-                    echo "Syncing credential to namespace: $ns"
+                    echo "Syncing credential to namespace: $ns, secret: $SECRET_NAME"
 
                     # Create or update docker-registry secret
-                    kubectl create secret docker-registry regcred \
+                    kubectl create secret docker-registry "$SECRET_NAME" \
                       --namespace="$ns" \
-                      --docker-server=273216125096.dkr.ecr.ap-northeast-2.amazonaws.com \
+                      --docker-server="$ECR_REGISTRY" \
                       --docker-username=AWS \
                       --docker-password="$ECR_TOKEN" \
                       --dry-run=client -o yaml | kubectl apply -f -
@@ -46,17 +46,23 @@ spec:
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:
                     secretKeyRef:
-                      name: aws-ecr-image-pull-credentials
+                      name: $(AWS_CREDENTIAL_SECRET_NAME)
                       key: accessKey
                       optional: false
                 - name: AWS_SECRET_ACCESS_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: aws-ecr-image-pull-credentials
+                      name: $(AWS_CREDENTIAL_SECRET_NAME)
                       key: secretAccessKey
                       optional: false
-                - name: AWS_DEFAULT_REGION
+                - name: AWS_CREDENTIAL_SECRET_NAME
+                  value: aws-ecr-image-pull-credentials
+                - name: AWS_REGION
                   value: ap-northeast-2
+                - name: ECR_REGISTRY
+                  value: 273216125096.dkr.ecr.ap-northeast-2.amazonaws.com
+                - name: SECRET_NAME
+                  value: ecr-credential
               resources:
                 requests:
                   cpu: 100m
