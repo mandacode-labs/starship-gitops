@@ -9,6 +9,9 @@ spec:
     - repoURL: https://github.com/mandacode-labs/traditional-saju-backend.git
       targetRevision: main
       path: deploy/chart
+      helm:
+        valueFiles:
+          - $values/apps/traditional-saju/values.yaml
 
     # Reference for values file
     - repoURL: https://github.com/mandacode-labs/starship-gitops.git
