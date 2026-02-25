@@ -303,7 +303,7 @@ cluster:
     - name: traditional-saju
       ensure: present
       comment: Application user
-      login: false
+      login: true
       superuser: false
       passwordSecret:
         name: cnpg-user-traditional-saju
