@@ -13,6 +13,42 @@ spec:
         spec:
           serviceAccountName: aws-ecr-credential-sync
           restartPolicy: OnFailure
+          initContainers:
+            - name: aws-cli
+              image: amazon/aws-cli:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  # Get ECR token and save to shared volume
+                  aws ecr get-login-password \
+                    --region "$AWS_REGION" \
+                    --access-key-id "$AWS_ACCESS_KEY_ID" \
+                    --secret-access-key "$AWS_SECRET_ACCESS_KEY" \
+                    > /token/ecr-token
+              env:
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws-ecr-image-pull-credentials
+                      key: accessKey
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws-ecr-image-pull-credentials
+                      key: secretAccessKey
+                - name: AWS_REGION
+                  value: ap-northeast-2
+              volumeMounts:
+                - name: token
+                  mountPath: /token
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+                limits:
+                  cpu: 500m
+                  memory: 256Mi
           containers:
             - name: kubectl
               image: bitnami/kubectl:latest
@@ -20,10 +56,8 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  # Get ECR token
-                  ECR_TOKEN=$(aws ecr get-login-password --region "$AWS_REGION" \
-                    --access-key-id "$AWS_ACCESS_KEY_ID" \
-                    --secret-access-key "$AWS_SECRET_ACCESS_KEY")
+                  # Read ECR token from shared volume
+                  ECR_TOKEN=$(cat /token/ecr-token)
 
                   # Get all namespaces
                   NAMESPACES=$(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}')
@@ -43,22 +77,13 @@ spec:
 
                   echo "ECR credential sync completed for all namespaces"
               env:
-                - name: AWS_ACCESS_KEY_ID
-                  valueFrom:
-                    secretKeyRef:
-                      name: aws-ecr-image-pull-credentials
-                      key: accessKey
-                - name: AWS_SECRET_ACCESS_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: aws-ecr-image-pull-credentials
-                      key: secretAccessKey
-                - name: AWS_REGION
-                  value: ap-northeast-2
                 - name: ECR_REGISTRY
                   value: 273216125096.dkr.ecr.ap-northeast-2.amazonaws.com
                 - name: SECRET_NAME
                   value: ecr-cred
+              volumeMounts:
+                - name: token
+                  mountPath: /token
               resources:
                 requests:
                   cpu: 100m
@@ -66,3 +91,7 @@ spec:
                 limits:
                   cpu: 500m
                   memory: 256Mi
+          volumes:
+            - name: token
+              emptyDir:
+                sizeLimit: 1Mi
