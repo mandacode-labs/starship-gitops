@@ -1,16 +1,11 @@
-# Image configuration
-image:
-  registry: "273216125096.dkr.ecr.ap-northeast-2.amazonaws.com/traditional-saju"
-  tag: "0.2.0"
-  pullPolicy: IfNotPresent
-  pullSecrets:
-    - name: "regcred"
-
 # Application configuration
 app:
-  imageName: "app"
-  enabled: true
-  env: "prod"
+  image:
+    repository: "273216125096.dkr.ecr.ap-northeast-2.amazonaws.com/traditional-saju/app"
+    tag: "0.2.0"
+    pullPolicy: IfNotPresent
+    pullSecrets:
+      - name: "regcred"
   replicaCount: 2
   service:
     type: ClusterIP
@@ -69,6 +64,10 @@ config:
 
 # Database configuration
 database:
+  image:
+    repository: "273216125096.dkr.ecr.ap-northeast-2.amazonaws.com/traditional-saju/migration"
+    tag: "0.2.0"
+    pullPolicy: IfNotPresent
   # Set existingSecret to use external secret for credentials (username, password)
   existingSecret: "db-user"
   existingSecretKeys: # Optional: specify custom key names in existingSecret
@@ -115,8 +114,9 @@ podSecurityContext:
 # Service account
 serviceAccount:
   create: true
-  annotations: {}
-  name: ""
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::273216125096:role/StarshipECRTraditionalSajuPull"
+  name: "traditional-saju"
 
 # Node selector and tolerations
 nodeSelector: {}
