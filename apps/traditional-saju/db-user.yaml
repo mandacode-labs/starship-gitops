@@ -1,0 +1,24 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: db-user
+  namespace: traditional-saju
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: aws-secret-manager
+    kind: ClusterSecretStore
+  target:
+    name: db-user
+    creationPolicy: Owner
+    template:
+      data:
+        username: traditional-saju
+        password: "{{ .password }}"
+  data:
+    - secretKey: password
+      remoteRef:
+        key: starship/global-database/cnpg/user/traditional-saju
+        property: password

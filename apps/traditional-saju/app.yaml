@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traditional-saju
+  namespace: argocd
+spec:
+  project: traditional-saju
+  sources:
+    - repoURL: https://github.com/mandacode-labs/traditional-saju-backend.git
+      targetRevision: main
+      path: deploy/chart
+
+    # Reference for values file
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      ref: values
+
+    # Kustomization for ExternalSecret resources
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      path: apps/traditional-saju
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traditional-saju
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,28 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: keycloak-backend-client
+  namespace: traditional-saju
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: aws-secret-manager
+    kind: ClusterSecretStore
+  target:
+    name: keycloak-backend-client
+    creationPolicy: Owner
+    template:
+      data:
+        clientId: "{{ .clientId }}"
+        clientSecret: "{{ .clientSecret }}"
+  data:
+    - secretKey: clientId
+      remoteRef:
+        key: starship/traditional-saju/idp/backend-client
+        property: clientId
+    - secretKey: clientSecret
+      remoteRef:
+        key: starship/traditional-saju/idp/backend-client
+        property: clientSecret

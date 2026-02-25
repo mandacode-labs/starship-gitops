@@ -1,0 +1,30 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: traditional-saju-repo-secret
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: aws-secret-manager
+    kind: ClusterSecretStore
+  target:
+    name: traditional-saju-repo-secret
+    creationPolicy: Owner
+    template:
+      metadata:
+        labels:
+          argocd.argoproj.io/secret-type: repository
+      data:
+        type: git
+        url: https://github.com/mandacode-labs/traditional-saju-backend.git
+        name: mandacode-labs/traditional-saju-backend
+        username: starship-mandacode-labs-read
+        password: "{{ .password }}"
+  data:
+    - secretKey: password
+      remoteRef:
+        key: github/mandacode-labs/starship-mandacode-labs-read
+        property: token
