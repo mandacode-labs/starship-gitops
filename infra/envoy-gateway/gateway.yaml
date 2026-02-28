@@ -54,3 +54,16 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    # Serengeti
+    - name: serengeti-https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.serengeti.sh"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: serengeti-tls
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: All
