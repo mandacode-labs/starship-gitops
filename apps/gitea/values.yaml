@@ -226,7 +226,7 @@ deployment:
     - name: GITEA__database__PASSWD
       valueFrom:
         secretKeyRef:
-          name: db-user
+          name: db-user-gitea
           key: password
   terminationGracePeriodSeconds: 60
   labels: {}
