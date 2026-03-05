@@ -430,7 +430,7 @@ backups:
   provider: s3
   s3:
     region: "ap-northeast-2"
-    bucket: "starship-gitea-cnpg-cluster-backup"
+    bucket: "starship-serengeti-gitea-cnpg-cluster-backup"
     path: "/v1/"
     accessKey: ""
     secretKey: ""
