@@ -568,9 +568,9 @@ replica:
 ##
 # Database management configuration
 databases:
-  - name: traditional-saju
+  - name: gitea
     ensure: present
-    owner: traditional-saju
+    owner: gitea
     encoding: UTF8
     connectionLimit: -1
   # - name: app                      # -- Name of the database to be created.
