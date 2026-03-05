@@ -9,7 +9,7 @@ spec:
   parentRefs:
     - name: eg
       namespace: default
-      sectionName: "https"
+      sectionName: "https-serengti"
   rules:
     - matches:
         - path:
