@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gitea-cnpg
+  name: serengeti-gitea-cnpg
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 spec:
-  project: gitea
+  project: serengeti-gitea
   sources:
     - repoURL: https://cloudnative-pg.github.io/charts
       chart: cluster

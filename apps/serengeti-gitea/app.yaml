@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gitea
+  name: serengeti-gitea
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  project: gitea
+  project: serengeti-gitea
   sources:
     - repoURL: https://dl.gitea.com/charts/
       chart: gitea

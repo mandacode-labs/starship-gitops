@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: gitea
+  name: serengeti-gitea
   namespace: argocd
 spec:
   description: Gitea Git Service
