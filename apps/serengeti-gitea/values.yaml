@@ -437,7 +437,7 @@ gitea:
 
     database:
       DB_TYPE: postgres
-      HOST: gitea-cnpg-cluster-rw.gitea.svc.cluster.local:5432
+      HOST: gitea-cnpg-cluster-rw.serengeti-gitea.svc.cluster.local:5432
       NAME: gitea
       USER: gitea
       SCHEMA: public

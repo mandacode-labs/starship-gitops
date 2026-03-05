@@ -7,7 +7,7 @@ spec:
   description: Gitea Git Service
   destinations:
     - name: in-cluster
-      namespace: gitea
+      namespace: serengeti-gitea
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: "*"

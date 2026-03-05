@@ -401,7 +401,7 @@ cluster:
     metadata:
       annotations:
         # Complete the arn
-        eks.amazonaws.com/role-arn: "arn:aws:iam::273216125096:role/StarshipGiteaCNPGClusterBackup"
+        eks.amazonaws.com/role-arn: "arn:aws:iam::273216125096:role/StarshipSerengetiGiteaCNPGClusterBackup"
 
   additionalLabels: {}
   annotations: {}

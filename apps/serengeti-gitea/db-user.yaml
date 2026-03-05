@@ -2,7 +2,7 @@ apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: db-user-gitea
-  namespace: gitea
+  namespace: serengeti-gitea
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
 spec:
@@ -20,5 +20,5 @@ spec:
   data:
     - secretKey: password
       remoteRef:
-        key: starship/gitea/cnpg/user/gitea
+        key: starship/serengeti-gitea/cnpg/user/gitea
         property: password
