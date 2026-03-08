@@ -441,6 +441,9 @@ gitea:
       NAME: gitea
       USER: gitea
       SCHEMA: public
+
+    service:
+      DISABLE_REGISTRATION: true
   #
   #  security:
   #    PASSWORD_COMPLEXITY: spec
