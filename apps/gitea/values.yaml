@@ -443,6 +443,9 @@ gitea:
 
     service:
       DISABLE_REGISTRATION: true
+
+    actions:
+      ENABLED: true
   #
   #  security:
   #    PASSWORD_COMPLEXITY: spec
@@ -523,6 +526,18 @@ gitea:
     periodSeconds: 10
     successThreshold: 1
     failureThreshold: 10
+
+actions:
+  enabled: true
+  provisioning:
+    enabled: true
+  statefulset:
+    actRunner:
+      repository: gitea/act_runner
+      tag: latest
+    dind:
+      repository: docker
+      tag: dind
 
 ## @section valkey-cluster
 ## @descriptionStart
