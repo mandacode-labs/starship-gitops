@@ -8,4 +8,5 @@ resources:
   - routes.yaml
   - cnpg-app.yaml
   - app.yaml
+  - runner-token.yaml
   - act-app.yaml

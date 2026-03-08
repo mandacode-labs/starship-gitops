@@ -1,0 +1,23 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: gitea-runner-token
+  namespace: gitea
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: aws-secret-manager
+    kind: ClusterSecretStore
+  target:
+    name: gitea-runner-token
+    creationPolicy: Owner
+    template:
+      data:
+        token: "{{ .token }}"
+  data:
+    - secretKey: token
+      remoteRef:
+        key: starship/gitea/runner
+        property: token

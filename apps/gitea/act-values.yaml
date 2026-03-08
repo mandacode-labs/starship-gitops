@@ -112,11 +112,11 @@ init:
 
 ## Specify an existing token secret
 ##
-existingSecret: ""
-existingSecretKey: ""
+existingSecret: "gitea-runner-token"
+existingSecretKey: "token"
 
 ## Specify the root URL of the Gitea instance
-giteaRootURL: ""
+  giteaRootURL: "https://git.mandacode.com"
 
 ## @section Global
 #
