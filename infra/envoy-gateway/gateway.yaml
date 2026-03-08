@@ -69,7 +69,7 @@ spec:
           from: All
     - name: ssh
       protocol: TCP
-      port: 22
+      port: 2222
       allowedRoutes:
         kinds:
           - group: gateway.networking.k8s.io
