@@ -4,5 +4,7 @@ kind: Kustomization
 namespace: global-database
 
 resources:
+  - project.yaml
+  - app.yaml
   - users/admin.yaml
   - users/traditional-saju.yaml

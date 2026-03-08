@@ -19,11 +19,6 @@ spec:
       targetRevision: main
       ref: values
 
-    # Kustomization for ExternalSecret resources
-    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
-      targetRevision: main
-      path: apps/global-cnpg
-
   destination:
     server: https://kubernetes.default.svc
     namespace: global-database
