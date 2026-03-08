@@ -2,7 +2,7 @@ apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: gitea-runner-token
-  namespace: gitea
+  namespace: gitea-actions
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
 spec:
