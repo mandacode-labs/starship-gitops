@@ -37,11 +37,17 @@
 ## @param giteaRootURL URL the act_runner registers and connect with
 enabled: true
 statefulset:
-  replicas: 1
+  replicas: 3
   timezone: Etc/UTC
   annotations: {}
   labels: {}
-  resources: {}
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
   nodeSelector: {}
   tolerations: []
   affinity: {}
