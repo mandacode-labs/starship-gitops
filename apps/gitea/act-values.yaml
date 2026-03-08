@@ -116,7 +116,7 @@ existingSecret: "gitea-runner-token"
 existingSecretKey: "token"
 
 ## Specify the root URL of the Gitea instance
-  giteaRootURL: "https://git.mandacode.com"
+giteaRootURL: "https://git.mandacode.com"
 
 ## @section Global
 #
