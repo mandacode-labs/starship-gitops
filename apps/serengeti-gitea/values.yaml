@@ -434,6 +434,9 @@ gitea:
     server:
       SSH_PORT: 22 # rootful image
       SSH_LISTEN_PORT: 2222 # rootless image
+      DOMAIN: "git.serengeti.sh"
+      ROOT_URL: "http://git.serengeti.sh"
+      SSH_DOMAIN: "git.serengeti.sh"
 
     database:
       DB_TYPE: postgres
