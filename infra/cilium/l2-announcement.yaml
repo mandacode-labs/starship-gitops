@@ -11,10 +11,12 @@ spec:
 apiVersion: "cilium.io/v2"
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: "eg-ip-pool"
+  name: "default-gw-ip-pool"
 spec:
   blocks:
     - cidr: "192.168.0.5/32"
   serviceSelector:
     matchLabels:
+      app.kubernetes.io/component: proxy
+      app.kubernetes.io/managed-by: envoy-gateway
       app.kubernetes.io/name: envoy

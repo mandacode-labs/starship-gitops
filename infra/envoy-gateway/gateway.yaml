@@ -54,7 +54,8 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: https-serengeti
+    # Serengeti
+    - name: serengeti-https
       protocol: HTTPS
       port: 443
       hostname: "*.serengeti.sh"
