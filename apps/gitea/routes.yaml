@@ -27,8 +27,8 @@ metadata:
   namespace: gitea
 spec:
   parentRefs:
-    - name: gitea-gateway
-      namespace: envoy-gateway-system
+    - name: eg
+      namespace: default
       sectionName: ssh
   rules:
     - backendRefs:
