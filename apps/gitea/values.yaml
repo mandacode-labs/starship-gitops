@@ -527,18 +527,6 @@ gitea:
     successThreshold: 1
     failureThreshold: 10
 
-actions:
-  enabled: true
-  provisioning:
-    enabled: true
-  statefulset:
-    actRunner:
-      repository: gitea/act_runner
-      tag: latest
-    dind:
-      repository: docker
-      tag: dind
-
 ## @section valkey-cluster
 ## @descriptionStart
 ## Valkey cluster and [Valkey](#valkey) cannot be enabled at the same time.

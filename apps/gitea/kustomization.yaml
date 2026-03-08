@@ -8,3 +8,4 @@ resources:
   - routes.yaml
   - cnpg-app.yaml
   - app.yaml
+  - act-app.yaml
