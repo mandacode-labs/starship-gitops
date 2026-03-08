@@ -431,7 +431,7 @@ gitea:
       SSH_PORT: 22 # rootful image
       SSH_LISTEN_PORT: 2222 # rootless image
       DOMAIN: "git.mandacode.com"
-      ROOT_URL: "http://git.mandacode.com"
+      ROOT_URL: "https://git.mandacode.com"
       SSH_DOMAIN: "git.mandacode.com"
 
     database:
