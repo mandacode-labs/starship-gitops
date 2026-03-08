@@ -21,7 +21,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: gitea
+    namespace: gitea-actions
   syncPolicy:
     automated:
       prune: true
