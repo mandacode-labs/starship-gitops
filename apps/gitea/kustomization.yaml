@@ -5,5 +5,6 @@ resources:
   - project.yaml
   - db-user.yaml
   - app-user-admin.yaml
+  - routes.yaml
   - cnpg-app.yaml
   - app.yaml
