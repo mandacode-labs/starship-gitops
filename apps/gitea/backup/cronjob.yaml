@@ -1,0 +1,73 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gitea-backup
+  namespace: gitea
+spec:
+  schedule: "0 2 * * *" # Every day at 2 AM
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        metadata:
+          annotations:
+            eks.amazonaws.com/role-arn: arn:aws:iam::273216125096:role/StarshipGiteaBackup
+        spec:
+          serviceAccountName: gitea-backup
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          containers:
+            - name: backup
+              image: restic/restic:0.17.3
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+                  echo "Starting Gitea backup at $(date)"
+
+                  # Initialize repo if not exists
+                  restic snapshots || restic init
+
+                  # Backup data
+                  restic backup /data \
+                    --tag gitea \
+                    --tag scheduled \
+                    --host gitea
+
+                  # Prune old backups (keep last 7 daily, 4 weekly, 6 monthly)
+                  restic forget \
+                    --keep-daily 7 \
+                    --keep-weekly 4 \
+                    --keep-monthly 6 \
+                    --prune
+
+                  echo "Backup completed at $(date)"
+              env:
+                - name: RESTIC_REPOSITORY
+                  value: s3:https://s3.ap-northeast-2.amazonaws.com/starship-gitea-backup
+                - name: RESTIC_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: gitea-backup-credentials
+                      key: restic-password
+              volumeMounts:
+                - name: gitea-data
+                  mountPath: /data
+                  readOnly: true
+              resources:
+                requests:
+                  memory: "256Mi"
+                  cpu: "100m"
+                limits:
+                  memory: "512Mi"
+                  cpu: "500m"
+          volumes:
+            - name: gitea-data
+              persistentVolumeClaim:
+                claimName: gitea-shared-storage
+          restartPolicy: OnFailure
