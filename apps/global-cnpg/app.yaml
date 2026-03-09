@@ -22,7 +22,7 @@ spec:
     # Kustomization for global database users
     - repoURL: https://github.com/mandacode-labs/starship-gitops.git
       targetRevision: main
-      path: apps/global-database/users
+      path: apps/global-cnpg/users
 
   destination:
     server: https://kubernetes.default.svc
