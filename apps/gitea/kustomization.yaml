@@ -6,4 +6,4 @@ resources:
   - cnpg.yaml
   - app.yaml
   - actions.yaml
-  - backup
+  - backup/app.yaml
