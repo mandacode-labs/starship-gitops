@@ -1,26 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traditional-saju
+  name: apps
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
-  project: traditional-saju
+  project: apps
   sources:
-    - repoURL: https://github.com/mandacode-labs/traditional-saju-backend.git
-      targetRevision: main
-      path: deploy/chart
-      helm:
-        valueFiles:
-          - $values/apps/traditional-saju/values.yaml
-
-    # Reference for values file
+    # Kustomization for apps
     - repoURL: https://github.com/mandacode-labs/starship-gitops.git
       targetRevision: main
-      ref: values
+      path: apps
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: traditional-saju
   syncPolicy:
     automated:
       prune: true

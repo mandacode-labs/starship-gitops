@@ -1,27 +1,32 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gitea-actions
+  name: gitea-cnpg
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: gitea
   sources:
-    - repoURL: https://dl.gitea.com/charts/
-      chart: actions
-      targetRevision: "0.0.3"
+    - repoURL: https://cloudnative-pg.github.io/charts
+      chart: cluster
+      targetRevision: 0.5.0
       helm:
         valueFiles:
-          - $values/apps/gitea/act-values.yaml
+          - $values/apps/gitea/cnpg/values.yaml
 
     - repoURL: https://github.com/mandacode-labs/starship-gitops.git
       targetRevision: main
       ref: values
 
+    # Kustomization
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      path: apps/gitea/cnpg
+
   destination:
     server: https://kubernetes.default.svc
-    namespace: gitea-actions
+    namespace: gitea
   syncPolicy:
     automated:
       prune: true

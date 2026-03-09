@@ -13,11 +13,16 @@ spec:
       targetRevision: "12.5.0"
       helm:
         valueFiles:
-          - $values/apps/gitea/values.yaml
+          - $values/apps/gitea/app/values.yaml
 
     - repoURL: https://github.com/mandacode-labs/starship-gitops.git
       targetRevision: main
       ref: values
+
+    # Kustomization
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      path: apps/gitea/app
 
   destination:
     server: https://kubernetes.default.svc
