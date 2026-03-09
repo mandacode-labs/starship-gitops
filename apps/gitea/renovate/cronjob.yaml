@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: renovate
-  namespace: renovate
+  namespace: gitea
 spec:
   schedule: "0 1 * * *"
   concurrencyPolicy: Forbid
@@ -39,7 +39,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: renovate-config
-  namespace: renovate
+  namespace: gitea
 stringData:
   config.json: |
     {
@@ -60,4 +60,4 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: renovate
-  namespace: renovate
+  namespace: gitea

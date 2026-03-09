@@ -11,7 +11,7 @@ spec:
     path: apps/gitea/renovate
   destination:
     server: https://kubernetes.default.svc
-    namespace: renovate
+    namespace: gitea
   syncPolicy:
     automated:
       prune: true
