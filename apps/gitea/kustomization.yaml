@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - project.yaml
-  - cnpg.yaml
-  - app.yaml
-  - actions.yaml
+  - cnpg/app.yaml
+  - app/app.yaml
+  - act/app.yaml
   - backup/app.yaml
