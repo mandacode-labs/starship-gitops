@@ -25,7 +25,7 @@ cronjob:
   # -- Labels to set on the cronjob
   labels: {}
   # -- "Allow" to allow concurrent runs, "Forbid" to skip new runs if a previous run is still running or "Replace" to replace the previous run
-  concurrencyPolicy: ''
+  concurrencyPolicy: 'Forbid'
   # -- "Number of successful completions is reached to mark the job as complete"
   completions: ''
   # -- "Where the jobs should be NonIndexed or Indexed"
@@ -96,24 +96,27 @@ renovate:
   # -- Custom exiting global renovate config
   existingConfigFile: ''
   # -- Inline global renovate config.json
-  config: ''
+  config: |
+    {
+      "platform": "gitea",
+      "endpoint": "https://git.mandacode.com/api/v1",
+      "autodiscover": true,
+      "autodiscoverFilter": ["mandacode-labs/*"],
+      "gitAuthor": "renovate-bot <renovate@mandacode.com>",
+      "onboarding": true,
+      "onboardingConfig": {
+        "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+        "extends": ["config:recommended"]
+      },
+      "timezone": "Asia/Seoul"
+    }
   # See https://docs.renovatebot.com/self-hosted-configuration
-  # config: |
-  #   {
-  #     "platform": "gitlab",
-  #     "endpoint": "https://gitlab.example.com/api/v4",
-  #     "token": "your-gitlab-renovate-user-token",
-  #     "autodiscover": "false",
-  #     "dryRun": true,
-  #     "printConfig": true,
-  #     "repositories": ["username/repo", "orgname/repo"]
-  #   }
 
   # -- Use the Helm tpl function on your configuration. See README for how to use this value
   configEnableHelmTpl: false
 
   # -- Use this to create the renovate-config as a secret instead of a configmap
-  configIsSecret: false
+  configIsSecret: true
 
   # -- Use this to create a config.js instead of a config.json
   configIsJavaScript: false
@@ -159,7 +162,7 @@ ssh_config:
 # -- Environment variables that should be referenced from a k8s secret, cannot be used when existingSecret is set
 secrets: {}
 # -- k8s secret to reference environment variables from. Overrides secrets if set
-existingSecret: ''
+existingSecret: renovate-credentials
 
 # -- Additional configmaps. A generated configMap name is: "renovate.fullname" + "extra" + name(below) e.g. renovate-netrc-config
 extraConfigmaps: []
@@ -209,7 +212,7 @@ extraContainers: []
 
 serviceAccount:
   # -- Specifies whether a service account should be created
-  create: false
+  create: true
   # -- Annotations to add to the service account
   annotations: {}
   # -- The name of the service account to use
