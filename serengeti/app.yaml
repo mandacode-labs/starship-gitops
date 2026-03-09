@@ -7,7 +7,7 @@ spec:
   project: serengeti
   sources:
     # Kustomization for serengeti
-    - repoURL: https://github.com/serengeti-sh/starship-gitops.git
+    - repoURL: https://git.mandacode.com/serengeti/starship-gitops.git
       targetRevision: main
       path: .
 

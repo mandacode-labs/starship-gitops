@@ -16,4 +16,4 @@ spec:
     - group: "*"
       kind: "*"
   sourceRepos:
-    - https://github.com/serengeti-sh/starship-gitops.git
+    - https://git.mandacode.com/serengeti/starship-gitops.git
