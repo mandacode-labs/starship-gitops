@@ -7,3 +7,4 @@ resources:
   - app/app.yaml
   - act/app.yaml
   - backup/app.yaml
+  - renovate/app.yaml

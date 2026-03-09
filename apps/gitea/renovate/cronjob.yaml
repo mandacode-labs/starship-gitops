@@ -1,0 +1,63 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: renovate
+  namespace: renovate
+spec:
+  schedule: "0 1 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          serviceAccountName: renovate
+          restartPolicy: Never
+          containers:
+            - name: renovate
+              image: renovate/renovate:43.59.4
+              env:
+                - name: RENOVATE_CONFIG_FILE
+                  value: /config/config.json
+                - name: RENOVATE_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: renovate-credentials
+                      key: token
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+                  readOnly: true
+          volumes:
+            - name: config
+              secret:
+                secretName: renovate-config
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: renovate-config
+  namespace: renovate
+stringData:
+  config.json: |
+    {
+      "platform": "gitea",
+      "endpoint": "https://git.mandacode.com/api/v1",
+      "autodiscover": true,
+      "autodiscoverFilter": ["mandacode-labs/*"],
+      "gitAuthor": "renovate-bot <renovate@mandacode.com>",
+      "onboarding": true,
+      "onboardingConfig": {
+        "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+        "extends": ["config:recommended"]
+      },
+      "timezone": "Asia/Seoul"
+    }
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: renovate
+  namespace: renovate
