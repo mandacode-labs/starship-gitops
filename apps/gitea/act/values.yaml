@@ -52,8 +52,7 @@ statefulset:
   tolerations: []
   affinity: {}
   extraVolumes: []
-  securityContext:
-    privileged: true
+  securityContext: {}
 
   actRunner:
     registry: "docker.gitea.com"
