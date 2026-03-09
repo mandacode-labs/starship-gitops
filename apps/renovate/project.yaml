@@ -16,5 +16,5 @@ spec:
     - group: "*"
       kind: "*"
   sourceRepos:
-    - oci://ghcr.io/renovatebot/helm-charts
+    - oci://ghcr.io/renovatebot/helm-charts/renovate
     - https://github.com/mandacode-labs/starship-gitops.git
