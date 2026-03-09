@@ -63,8 +63,7 @@ statefulset:
     pullPolicy: IfNotPresent
     fullOverride: ""
     extraVolumeMounts: []
-    extraEnvs:
-      []
+    extraEnvs: []
       # - name: "GITEA_RUNNER_NAME"
       #   valueFrom:
       #     fieldRef:
@@ -91,8 +90,7 @@ statefulset:
 
     # If the container keeps crashing in your environment, you might have to add the `DOCKER_IPTABLES_LEGACY` environment variable.
     # See https://github.com/docker-library/docker/issues/463#issuecomment-1881909456
-    extraEnvs:
-      []
+    extraEnvs: []
       #  - name: "DOCKER_IPTABLES_LEGACY"
       #    value: "1"
 
@@ -132,4 +130,3 @@ giteaRootURL: "http://gitea-http.gitea:3000"
 global:
   imageRegistry: ""
   storageClass: ""
-
