@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: renovate
+  namespace: argocd
+spec:
+  project: renovate
+  sources:
+    - repoURL: oci://ghcr.io/renovatebot/helm-charts/renovate
+      chart: renovate
+      targetRevision: 39.181.2
+      helm:
+        valueFiles:
+          - $values/apps/renovate/values.yaml
+
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      ref: values
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: renovate
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
