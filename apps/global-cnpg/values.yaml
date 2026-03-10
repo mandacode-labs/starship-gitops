@@ -334,6 +334,10 @@ cluster:
       # -- Exclude specified rules
       excludeRules: []
         # - CNPGClusterZoneSpreadWarning
+    # Additional instrumentation via custom metrics
+    instrumentation:
+      # -- Enable logical replication metrics
+      logicalReplication: true
     # -- Whether the default queries should be injected.
     # Set it to true if you don't want to inject default queries into the cluster.
     disableDefaultQueries: false
@@ -410,8 +414,20 @@ cluster:
         # Complete the arn
         eks.amazonaws.com/role-arn: "arn:aws:iam::273216125096:role/StarshipGlobalCNPGClusterBackup"
 
+  # -- Configure the Pod Security Context.
+  # See: https://cloudnative-pg.io/documentation/preview/security/
+  podSecurityContext: {}
+
+  # -- Configure Container Security Context.
+  # See: https://cloudnative-pg.io/documentation/preview/security/
+  securityContext: {}
+
   additionalLabels: {}
   annotations: {}
+
+  console:
+    # -- Deploys a console StatefulSet to run long-running commands against the cluster (e.g. `CREATE INDEX`).
+    enabled: false
 
 backups:
   # -- You need to configure backups manually, so backups are disabled by default.
