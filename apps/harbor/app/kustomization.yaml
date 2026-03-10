@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: harbor
 
 resources:
+  - certificate.yaml
   - routes.yaml
   - serviceaccount.yaml
   - user-admin.yaml

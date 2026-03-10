@@ -32,5 +32,8 @@ spec:
       name: harbor
       sectionName: "443"
   validation:
-    wellKnownCACertificates: System
+    caCertificateRefs:
+      - name: starship-root-ca
+        group: ""
+        kind: Secret
     hostname: harbor.harbor.svc.cluster.local
