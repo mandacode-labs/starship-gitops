@@ -1,7 +1,7 @@
 # -- Override the name of the chart
-nameOverride: "gitea-cnpg-cluster"
+nameOverride: "harbor-cnpg-cluster"
 # -- Override the full name of the chart
-fullnameOverride: "gitea-cnpg-cluster"
+fullnameOverride: "harbor-cnpg-cluster"
 # -- Override the namespace of the chart
 namespaceOverride: ""
 
@@ -293,13 +293,13 @@ cluster:
   # already present in the database.
   # See: https://cloudnative-pg.io/documentation/current/declarative_role_management/
   roles:
-    - name: gitea
+    - name: app
       ensure: present
       comment: Application user
       login: true
       superuser: false
       passwordSecret:
-        name: db-user-gitea
+        name: db-user-app
     # - name: dante
     #   ensure: present
     #   comment: Dante Alighieri
@@ -405,7 +405,7 @@ cluster:
     metadata:
       annotations:
         # Complete the arn
-        eks.amazonaws.com/role-arn: "arn:aws:iam::273216125096:role/StarshipGiteaCNPGClusterBackup"
+        eks.amazonaws.com/role-arn: "arn:aws:iam::273216125096:role/StarshipHarborCNPGClusterBackup"
 
   # -- Configure the Pod Security Context.
   # See: https://cloudnative-pg.io/documentation/preview/security/
@@ -446,8 +446,8 @@ backups:
   provider: s3
   s3:
     region: "ap-northeast-2"
-    bucket: "starship-gitea-cnpg-cluster-backup"
-    path: "/v1/"
+    bucket: "starship-harbor"
+    path: "/db-backup/v1/"
     accessKey: ""
     secretKey: ""
     # -- Use the role based authentication without providing explicitly the keys
@@ -584,9 +584,9 @@ replica:
 ##
 # Database management configuration
 databases:
-  - name: gitea
+  - name: app
     ensure: present
-    owner: gitea
+    owner: app
     encoding: UTF8
     connectionLimit: -1
   # - name: app                      # -- Name of the database to be created.

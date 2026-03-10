@@ -1,0 +1,28 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: harbor-user-admin
+  namespace: harbor
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: aws-secret-manager
+    kind: ClusterSecretStore
+  target:
+    name: harbor-user-admin
+    creationPolicy: Owner
+    template:
+      data:
+        username: "{{ .username }}"
+        password: "{{ .password }}"
+  data:
+    - secretKey: username
+      remoteRef:
+        key: starship/harbor/user/admin
+        property: username
+    - secretKey: password
+      remoteRef:
+        key: starship/harbor/user/admin
+        property: password

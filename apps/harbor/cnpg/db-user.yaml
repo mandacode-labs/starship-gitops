@@ -1,0 +1,24 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: db-user-app
+  namespace: harbor
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: aws-secret-manager
+    kind: ClusterSecretStore
+  target:
+    name: db-user-app
+    creationPolicy: Owner
+    template:
+      data:
+        username: app
+        password: "{{ .password }}"
+  data:
+    - secretKey: password
+      remoteRef:
+        key: starship/harbor/cnpg/user/app
+        property: password
