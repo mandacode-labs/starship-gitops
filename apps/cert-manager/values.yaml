@@ -1,36 +1,399 @@
+# +docs:section=Global
+# Default values for cert-manager.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+  # Reference to one or more secrets to be used when pulling images.
+  # For more information, see [Pull an Image from a Private Registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
+  #
+  # For example:
+  #  imagePullSecrets:
+  #    - name: "image-pull-secret"
+  imagePullSecrets: []
+
+  # Global node selector
+  # The nodeSelector on Pods tells Kubernetes to schedule Pods on the nodes with
+  # matching labels.
+  # For more information, see [Assigning Pods to Nodes](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/).
+  # If a component-specific nodeSelector is also set, it will be merged and take precedence.
+  # +docs:property
+  nodeSelector: {}
+
+  # Labels to apply to all resources.
+  commonLabels: {}
+
+  # The optional priority class to be used for the cert-manager pods.
+  priorityClassName: ""
+
+  rbac:
+    # Create required ClusterRoles and ClusterRoleBindings for cert-manager.
+    create: true
+    # Aggregate ClusterRoles to Kubernetes default user-facing roles.
+    aggregateClusterRoles: true
+
+  podSecurityPolicy:
+    # Create PodSecurityPolicy for cert-manager.
+    # Note that PodSecurityPolicy was deprecated in Kubernetes 1.21 and removed in Kubernetes 1.25.
+    enabled: false
+    # Configure the PodSecurityPolicy to use AppArmor.
+    useAppArmor: true
+
+  # Set the verbosity of cert-manager. A range of 0 - 6, with 6 being the most verbose.
+  logLevel: 2
+
+  leaderElection:
+    # Override the namespace used for the leader election lease.
+    # Default: "kube-system"
+    # Changed to "cert-manager" to avoid needing kube-system namespace permission
+    namespace: "cert-manager"
+
+    # The duration that non-leader candidates will wait after observing a
+    # leadership renewal until attempting to acquire leadership of a led but
+    # unrenewed leader slot.
+    # +docs:property
+    # leaseDuration: 60s
+
+    # The interval between attempts by the acting master to renew a leadership
+    # slot before it stops leading.
+    # +docs:property
+    # renewDeadline: 40s
+
+    # The duration the clients should wait between attempting acquisition and
+    # renewal of a leadership.
+    # +docs:property
+    # retryPeriod: 15s
+
+# This option is equivalent to setting crds.enabled=true and crds.keep=true.
+# Deprecated: use crds.enabled and crds.keep instead.
+installCRDs: false
+
 crds:
+  # This option decides if the CRDs should be installed
+  # as part of the Helm installation.
+  # Default: false
   enabled: true
+
+  # This option makes it so that the "helm.sh/resource-policy": keep
+  # annotation is added to the CRD. This will prevent Helm from uninstalling
+  # the CRD when the Helm release is uninstalled.
+  # WARNING: when the CRDs are removed, all cert-manager custom resources
+  # (Certificates, Issuers, ...) will be removed too by the garbage collector.
   keep: true
 
-global:
-  leaderElection:
-    namespace: cert-manager
+# +docs:section=Controller
 
+# The number of replicas of the cert-manager controller to run.
+# The default is 1, but in production set this to 2 or 3 to provide high availability.
+# If `replicas > 1`, consider setting `podDisruptionBudget.enabled=true`.
+# Note that cert-manager uses leader election to ensure that there can
+# only be a single instance active at a time.
 replicaCount: 1
 
+# Deployment update strategy for the cert-manager controller deployment.
+strategy: {}
+
 podDisruptionBudget:
+  # Enable or disable the PodDisruptionBudget resource.
   enabled: false
 
+  # +docs:property
+  # minAvailable: 1
+
+  # +docs:property
+  # maxUnavailable: 1
+
+# A comma-separated list of feature gates that should be enabled on the controller pod.
+featureGates: ""
+
+# The maximum number of challenges that can be scheduled as 'processing' at once.
+maxConcurrentChallenges: 60
+
+image:
+  # The container registry to pull the manager image from.
+  # +docs:property
+  # registry: quay.io
+
+  # The container image for the cert-manager controller.
+  # +docs:property
+  repository: quay.io/jetstack/cert-manager-controller
+
+  # Override the image tag to deploy by setting this variable.
+  # If no value is set, the chart's appVersion is used.
+  # +docs:property
+  # tag: vX.Y.Z
+
+  # Setting a digest will override any tag.
+  # +docs:property
+  # digest: sha256:0e072dddd1f7f8fc8909a2ca6f65e76c5f0d2fcfb8be47935ae3457e8bbceb20
+
+  # Kubernetes imagePullPolicy on Deployment.
+  pullPolicy: IfNotPresent
+
+# Override the namespace used to store DNS provider credentials etc. for ClusterIssuer
+# resources. By default, the same namespace as cert-manager is deployed within is used.
+clusterResourceNamespace: ""
+
+# This namespace allows you to define where the services are installed into.
+# If not set then they use the namespace of the release.
+namespace: ""
+
+# +docs:property
+# fullnameOverride: "my-cert-manager"
+
+# +docs:property
+# nameOverride: "my-cert-manager"
+
+serviceAccount:
+  # Specifies whether a service account should be created.
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template.
+  # +docs:property
+  # name: ""
+  # Optional additional annotations to add to the controller's Service Account.
+  # +docs:property
+  # annotations: {}
+  # Optional additional labels to add to the controller's Service Account.
+  # +docs:property
+  # labels: {}
+  # Automount API credentials for a Service Account.
+  automountServiceAccountToken: true
+
+# When this flag is enabled, secrets will be automatically removed when the certificate resource is deleted.
+enableCertificateOwnerRef: false
+
+# Resources to provide to the cert-manager controller pod.
+# For example:
+#  requests:
+#    cpu: 10m
+#    memory: 32Mi
 resources:
   requests:
     cpu: 10m
     memory: 32Mi
 
+# Pod Security Context.
+# +docs:property
+securityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+# Container Security Context to be set on the controller component container.
+# +docs:property
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+
+# Additional volumes to add to the cert-manager controller pod.
+volumes: []
+
+# Additional volume mounts to add to the cert-manager controller container.
+volumeMounts: []
+
+# +docs:property
+# deploymentAnnotations: {}
+
+# +docs:property
+# podAnnotations: {}
+
+# Optional additional labels to add to the controller Pods.
+podLabels: {}
+
+# +docs:property
+# serviceAnnotations: {}
+
+# +docs:property
+# serviceLabels: {}
+
+# +docs:section=Webhook
+
 webhook:
+  # Number of replicas of the cert-manager webhook to run.
+  replicaCount: 1
+
+  # Deployment update strategy for the cert-manager webhook deployment.
+  strategy: {}
+
+  podDisruptionBudget:
+    enabled: false
+    # +docs:property
+    # minAvailable: 1
+    # +docs:property
+    # maxUnavailable: 1
+
+  # Number of seconds to wait before timing out a request to the webhook.
+  timeoutSeconds: 30
+
+  image:
+    # +docs:property
+    # registry: quay.io
+    # +docs:property
+    repository: quay.io/jetstack/cert-manager-webhook
+    # +docs:property
+    # tag: vX.Y.Z
+    # +docs:property
+    # digest: sha256:...
+    pullPolicy: IfNotPresent
+
+  serviceAccount:
+    create: true
+    # +docs:property
+    # name: ""
+    # +docs:property
+    # annotations: {}
+    # +docs:property
+    # labels: {}
+    automountServiceAccountToken: true
+
+  # Resources to provide to the cert-manager webhook pod.
   resources:
     requests:
       cpu: 10m
       memory: 32Mi
+
+  securityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+
+  volumes: []
+  volumeMounts: []
+
+  # +docs:property
+  # deploymentAnnotations: {}
+  # +docs:property
+  # podAnnotations: {}
+  podLabels: {}
+  # +docs:property
+  # serviceAnnotations: {}
+  # +docs:property
+  # serviceLabels: {}
+
+# +docs:section=CA Injector
 
 cainjector:
+  # Number of replicas of the cert-manager cainjector to run.
+  replicaCount: 1
+
+  # Deployment update strategy for the cert-manager cainjector deployment.
+  strategy: {}
+
+  podDisruptionBudget:
+    enabled: false
+    # +docs:property
+    # minAvailable: 1
+    # +docs:property
+    # maxUnavailable: 1
+
+  image:
+    # +docs:property
+    # registry: quay.io
+    # +docs:property
+    repository: quay.io/jetstack/cert-manager-cainjector
+    # +docs:property
+    # tag: vX.Y.Z
+    # +docs:property
+    # digest: sha256:...
+    pullPolicy: IfNotPresent
+
+  serviceAccount:
+    create: true
+    # +docs:property
+    # name: ""
+    # +docs:property
+    # annotations: {}
+    # +docs:property
+    # labels: {}
+    automountServiceAccountToken: true
+
+  # Resources to provide to the cert-manager cainjector pod.
   resources:
     requests:
       cpu: 10m
       memory: 32Mi
 
+  securityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+
+  volumes: []
+  volumeMounts: []
+
+  # +docs:property
+  # deploymentAnnotations: {}
+  # +docs:property
+  # podAnnotations: {}
+  podLabels: {}
+
+# +docs:section=Startup API Check
+
 startupapicheck:
+  # Enables the startup api check.
   enabled: true
+
+  # Number of retries before giving up.
+  backoffLimit: 30
+
+  image:
+    # +docs:property
+    # registry: quay.io
+    # +docs:property
+    repository: quay.io/jetstack/cert-manager-ctl
+    # +docs:property
+    # tag: vX.Y.Z
+    # +docs:property
+    # digest: sha256:...
+    pullPolicy: IfNotPresent
+
+  serviceAccount:
+    create: true
+    # +docs:property
+    # name: ""
+    # +docs:property
+    # annotations: {}
+    # +docs:property
+    # labels: {}
+    automountServiceAccountToken: true
+
+  # Resources to provide to the cert-manager startupapicheck pod.
   resources:
     requests:
       cpu: 10m
       memory: 32Mi
+
+  securityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+
+  # +docs:property
+  # jobAnnotations: {}
+  # +docs:property
+  # podAnnotations: {}
+  podLabels: {}
