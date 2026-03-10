@@ -18,4 +18,19 @@ spec:
       backendRefs:
         - name: harbor
           namespace: harbor
-          port: 80
+          port: 443
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: BackendTLSPolicy
+metadata:
+  name: harbor-backend-tls
+  namespace: harbor
+spec:
+  targetRefs:
+    - group: ""
+      kind: Service
+      name: harbor
+      sectionName: "443"
+  validation:
+    wellKnownCACertificates: System
+    hostname: harbor.harbor.svc.cluster.local
