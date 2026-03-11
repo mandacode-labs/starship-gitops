@@ -18,8 +18,6 @@ spec:
     - repoURL: https://github.com/mandacode-labs/starship-gitops.git
       targetRevision: main
       path: apps/keycloak/db
-      helm:
-        skipCrds: true
   destination:
     server: https://kubernetes.default.svc
     namespace: keycloak
