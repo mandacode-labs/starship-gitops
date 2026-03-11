@@ -1,0 +1,24 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: db-user-app
+  namespace: keycloak
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: aws-secret-manager
+    kind: ClusterSecretStore
+  target:
+    name: db-user-app
+    creationPolicy: Owner
+    template:
+      data:
+        username: app
+        password: "{{ .password }}"
+  data:
+    - secretKey: password
+      remoteRef:
+        key: starship/keycloak/database/user/app
+        property: password

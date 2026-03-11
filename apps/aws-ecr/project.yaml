@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: aws-ecr
+  namespace: argocd
+spec:
+  description: AWS ECR Credential Sync
+  destinations:
+    - name: in-cluster
+      namespace: ecr-cred
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  sourceRepos:
+    - https://github.com/mandacode-labs/starship-gitops.git

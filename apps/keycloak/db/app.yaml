@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak-db
+  namespace: argocd
+spec:
+  project: keycloak
+  sources:
+    - repoURL: https://cloudnative-pg.github.io/charts
+      chart: cluster
+      targetRevision: 0.5.0
+      helm:
+        valueFiles:
+          - $values/apps/keycloak/db/values.yaml
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      ref: values
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      path: apps/keycloak/db
+      helm:
+        skipCrds: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: keycloak
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

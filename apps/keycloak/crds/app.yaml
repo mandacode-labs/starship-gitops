@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak-crds
+  namespace: argocd
+spec:
+  project: keycloak
+  source:
+    repoURL: https://github.com/mandacode-labs/starship-gitops.git
+    targetRevision: main
+    path: apps/keycloak/crds
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true

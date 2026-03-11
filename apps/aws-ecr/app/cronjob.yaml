@@ -1,0 +1,131 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: aws-ecr-credential-sync
+  namespace: ecr-cred
+spec:
+  schedule: "0 */12 * * *" # Every 12 hours
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: aws-ecr-credential-sync
+          restartPolicy: OnFailure
+          initContainers:
+            - name: aws-cli
+              image: amazon/aws-cli:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+
+                  echo "Starting ECR token fetch..."
+
+                  # Validate required environment variables
+                  if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] || [ -z "$AWS_REGION" ]; then
+                    echo "ERROR: Required AWS credentials are missing"
+                    exit 1
+                  fi
+
+                  # Get ECR token and save to shared volume
+                  echo "Fetching ECR token from region: $AWS_REGION"
+                  if ! aws ecr get-login-password \
+                    --region "$AWS_REGION" > /token/ecr-token 2>&1; then
+                    echo "ERROR: Failed to fetch ECR token"
+                    exit 1
+                  fi
+
+                  # Validate token is not empty
+                  if [ ! -s /token/ecr-token ]; then
+                    echo "ERROR: Received empty ECR token"
+                    exit 1
+                  fi
+
+                  echo "ECR token fetched successfully"
+              env:
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws-ecr-image-pull-credentials
+                      key: accessKey
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws-ecr-image-pull-credentials
+                      key: secretAccessKey
+                - name: AWS_REGION
+                  value: ap-northeast-2
+              volumeMounts:
+                - name: token
+                  mountPath: /token
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+                limits:
+                  cpu: 500m
+                  memory: 256Mi
+          containers:
+            - name: kubectl
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+
+                  # Read ECR token from shared volume
+                  if [ ! -f /token/ecr-token ]; then
+                    echo "ERROR: ECR token file not found. Init container may have failed."
+                    exit 1
+                  fi
+
+                  ECR_TOKEN=$(cat /token/ecr-token)
+
+                  # Validate token is not empty
+                  if [ -z "$ECR_TOKEN" ]; then
+                    echo "ERROR: ECR token is empty"
+                    exit 1
+                  fi
+
+                  echo "ECR token loaded successfully"
+
+                  # Get all namespaces
+                  NAMESPACES=$(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}')
+
+                  # Create/regenerate secret in each namespace
+                  for ns in $NAMESPACES; do
+                    echo "Syncing credential to namespace: $ns, secret: $SECRET_NAME"
+
+                    # Create or update docker-registry secret
+                    kubectl create secret docker-registry "$SECRET_NAME" \
+                      --namespace="$ns" \
+                      --docker-server="$ECR_REGISTRY" \
+                      --docker-username=AWS \
+                      --docker-password="$ECR_TOKEN" \
+                      --dry-run=client -o yaml | kubectl apply -f -
+                  done
+
+                  echo "ECR credential sync completed for all namespaces"
+              env:
+                - name: ECR_REGISTRY
+                  value: 273216125096.dkr.ecr.ap-northeast-2.amazonaws.com
+                - name: SECRET_NAME
+                  value: ecr-cred
+              volumeMounts:
+                - name: token
+                  mountPath: /token
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+                limits:
+                  cpu: 500m
+                  memory: 256Mi
+          volumes:
+            - name: token
+              emptyDir:
+                sizeLimit: 1Mi
