@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/mandacode-labs/starship-gitops.git
     targetRevision: main
-    path: apps/oidc
+    path: apps/oidc/resources
   destination:
     server: https://kubernetes.default.svc
     namespace: default
