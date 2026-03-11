@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: oidc-tls
+  namespace: default
+spec:
+  commonName: oidc-provider.default.svc.cluster.local
+  dnsNames:
+    - oidc-provider.default.svc.cluster.local
+    - oidc-provider.default.svc
+    - oidc-provider
+  secretName: oidc-tls
+  duration: 8760h
+  renewBefore: 720h
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: starship-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io

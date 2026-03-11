@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: keycloak
 
 resources:
+  - certificate.yaml
   - keycloak.yaml
   - httproute.yaml

@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: keycloak-tls
+  namespace: keycloak
+spec:
+  commonName: keycloak-service.keycloak.svc.cluster.local
+  dnsNames:
+    - keycloak-service.keycloak.svc.cluster.local
+    - keycloak-service.keycloak.svc
+    - keycloak-service
+  secretName: keycloak-tls
+  duration: 8760h
+  renewBefore: 720h
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: starship-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io

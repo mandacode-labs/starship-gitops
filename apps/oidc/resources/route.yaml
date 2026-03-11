@@ -17,3 +17,21 @@ spec:
       backendRefs:
         - name: oidc-provider
           port: 80
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: oidc-backend-tls
+  namespace: default
+spec:
+  targetRefs:
+    - group: ""
+      kind: Service
+      name: oidc-provider
+      sectionName: "80"
+  validation:
+    caCertificateRefs:
+      - name: starship-root-ca
+        group: ""
+        kind: Secret
+    hostname: oidc-provider.default.svc.cluster.local

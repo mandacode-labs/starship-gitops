@@ -19,3 +19,21 @@ spec:
         - name: keycloak-service
           namespace: keycloak
           port: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: keycloak-backend-tls
+  namespace: keycloak
+spec:
+  targetRefs:
+    - group: ""
+      kind: Service
+      name: keycloak-service
+      sectionName: "8080"
+  validation:
+    caCertificateRefs:
+      - name: starship-root-ca
+        group: ""
+        kind: Secret
+    hostname: keycloak-service.keycloak.svc.cluster.local

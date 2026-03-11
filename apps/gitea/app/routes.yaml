@@ -34,3 +34,21 @@ spec:
     - backendRefs:
         - name: gitea-ssh
           port: 22
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: gitea-backend-tls
+  namespace: gitea
+spec:
+  targetRefs:
+    - group: ""
+      kind: Service
+      name: gitea-http
+      sectionName: "3000"
+  validation:
+    caCertificateRefs:
+      - name: starship-root-ca
+        group: ""
+        kind: Secret
+    hostname: gitea-http.gitea.svc.cluster.local
