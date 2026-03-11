@@ -35,5 +35,5 @@ spec:
     caCertificateRefs:
       - name: starship-root-ca
         group: ""
-        kind: ConfigMap
+        kind: Secret
     hostname: harbor.harbor.svc.cluster.local
