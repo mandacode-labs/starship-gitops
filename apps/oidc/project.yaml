@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: oidc
+  namespace: argocd
+spec:
+  description: OIDC Provider
+  destinations:
+    - name: in-cluster
+      namespace: default
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  sourceRepos:
+    - https://github.com/mandacode-labs/starship-gitops.git

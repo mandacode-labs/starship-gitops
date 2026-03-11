@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oidc
+  namespace: argocd
+spec:
+  project: oidc
+  source:
+    repoURL: https://github.com/mandacode-labs/starship-gitops.git
+    targetRevision: main
+    path: apps/oidc
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
