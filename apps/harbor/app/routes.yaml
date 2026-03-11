@@ -30,7 +30,7 @@ spec:
     - group: ""
       kind: Service
       name: harbor
-      sectionName: "443"
+      sectionName: https
   validation:
     caCertificateRefs:
       - name: starship-root-ca
