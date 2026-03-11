@@ -446,8 +446,8 @@ backups:
   provider: s3
   s3:
     region: "ap-northeast-2"
-    bucket: "starship-gitea-cnpg-cluster-backup"
-    path: "/v1/"
+    bucket: "starship-gitea"
+    path: "/db-backup/v1/"
     accessKey: ""
     secretKey: ""
     # -- Use the role based authentication without providing explicitly the keys
