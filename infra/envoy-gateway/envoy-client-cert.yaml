@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: envoy-client-cert
+  namespace: envoy-gateway-system
+spec:
+  secretName: envoy-client-cert
+  duration: 8760h
+  renewBefore: 360h
+  commonName: envoy-gateway-client
+  subject:
+    organizations:
+      - mandacode
+    organizationalUnits:
+      - starship
+  usages:
+    - client auth
+  issuerRef:
+    name: starship-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
