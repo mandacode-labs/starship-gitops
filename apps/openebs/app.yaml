@@ -6,14 +6,12 @@ metadata:
 spec:
   project: openebs
   sources:
-    # Helm chart for OpenEBS
     - repoURL: https://openebs.github.io/openebs
       chart: openebs
       targetRevision: 4.4.0
       helm:
         valueFiles:
-          - $values/infra/storage/openebs/values.yaml
-    # Reference for values file
+          - $values/apps/openebs/values.yaml
     - repoURL: https://github.com/mandacode-labs/starship-gitops.git
       targetRevision: main
       ref: values
