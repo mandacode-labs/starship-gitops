@@ -224,7 +224,7 @@ persistence:
     s3:
       # Set an existing secret for S3 accesskey and secretkey
       # keys in the secret should be REGISTRY_STORAGE_S3_ACCESSKEY and REGISTRY_STORAGE_S3_SECRETKEY for registry
-      #existingSecret: ""
+      existingSecret: "aws-user-starship-harbor"
       region: ap-northeast-2
       bucket: starship-harbor
       #accesskey: awsaccesskey

@@ -8,3 +8,4 @@ resources:
   - routes.yaml
   - serviceaccount.yaml
   - user-admin.yaml
+  - aws-user.yaml
