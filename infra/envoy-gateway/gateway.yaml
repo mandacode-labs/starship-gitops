@@ -92,7 +92,7 @@ spec:
     - name: starfrag-https
       protocol: HTTPS
       port: 443
-      hostname: "*.starfrag.com"
+      hostname: "*.starfrag.co"
       tls:
         mode: Terminate
         certificateRefs:
