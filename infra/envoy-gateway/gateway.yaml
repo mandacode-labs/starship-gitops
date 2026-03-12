@@ -6,6 +6,15 @@ metadata:
 spec:
   gatewayClassName: eg
   listeners:
+    - name: ssh
+      protocol: TCP
+      port: 2222
+      allowedRoutes:
+        kinds:
+          - group: gateway.networking.k8s.io
+            kind: TCPRoute
+        namespaces:
+          from: All
     - name: https
       protocol: HTTPS
       port: 443
@@ -54,6 +63,18 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-registry
+      protocol: HTTPS
+      port: 443
+      hostname: "registry.mandacode.com"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: registry-mandacode-tls
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: All
     # Serengeti
     - name: serengeti-https
       protocol: HTTPS
@@ -67,24 +88,16 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: https-registry
+    # StarFrag
+    - name: starfrag-https
       protocol: HTTPS
       port: 443
-      hostname: "registry.mandacode.com"
+      hostname: "*.starfrag.com"
       tls:
         mode: Terminate
         certificateRefs:
-          - name: registry-mandacode-tls
+          - name: starfrag-tls
             kind: Secret
       allowedRoutes:
-        namespaces:
-          from: All
-    - name: ssh
-      protocol: TCP
-      port: 2222
-      allowedRoutes:
-        kinds:
-          - group: gateway.networking.k8s.io
-            kind: TCPRoute
         namespaces:
           from: All
