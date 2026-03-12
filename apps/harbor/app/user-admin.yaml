@@ -3,8 +3,6 @@ kind: ExternalSecret
 metadata:
   name: harbor-user-admin
   namespace: harbor
-  annotations:
-    argocd.argoproj.io/sync-wave: "-2"
 spec:
   refreshInterval: 24h
   secretStoreRef:

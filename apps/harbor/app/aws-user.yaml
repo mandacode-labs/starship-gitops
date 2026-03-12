@@ -3,26 +3,24 @@ kind: ExternalSecret
 metadata:
   name: aws-user-starship-harbor
   namespace: harbor
-  annotations:
-    argocd.argoproj.io/sync-wave: "-2"
 spec:
   refreshInterval: 24h
   secretStoreRef:
     name: aws-secret-manager
     kind: ClusterSecretStore
   target:
-    name: harbor-user-admin
+    name: aws-user-starship-harbor
     creationPolicy: Owner
     template:
       data:
         REGISTRY_STORAGE_S3_ACCESSKEY: "{{ .access_key }}"
-        REGISTRY_STORAGE_S3_SECRETKEY: "{{ .secret_access_key }}"
+        REGISTRY_STORAGE_S3_SECRETKEY: "{{ .secret_key }}"
   data:
     - secretKey: access_key
       remoteRef:
         key: aws/user/starship-harbor/access-key
         property: access_key
-    - secretKey: secret_access_key
+    - secretKey: secret_key
       remoteRef:
-        key: aws/user/starship-harbor/secret-access-key
-        property: secret_access_key
+        key: aws/user/starship-harbor/access-key
+        property: secret_key
