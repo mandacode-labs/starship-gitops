@@ -6,3 +6,5 @@ namespace: cert-manager
 resources:
   - root-ca.yaml
   - cluster-issuer.yaml
+  - cloudflare-api-token.yaml
+  - letsencrypt-issuer.yaml

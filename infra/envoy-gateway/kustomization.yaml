@@ -6,3 +6,4 @@ resources:
   - gateway.yaml
   - envoy-proxy.yaml
   - envoy-client-cert.yaml
+  - registry-certificate.yaml
