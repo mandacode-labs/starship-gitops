@@ -3,6 +3,8 @@ kind: ExternalSecret
 metadata:
   name: cnpg-user-starfrag-tarot
   namespace: global-database
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   refreshInterval: 24h
   secretStoreRef:
