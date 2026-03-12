@@ -1,0 +1,22 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: cnpg-user-starfrag-tarot
+  namespace: global-database
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: aws-secret-manager
+    kind: ClusterSecretStore
+  target:
+    name: cnpg-user-starfrag-tarot
+    creationPolicy: Owner
+    template:
+      data:
+        username: starfrag-tarot
+        password: "{{ .password }}"
+  data:
+    - secretKey: password
+      remoteRef:
+        key: starship/global-database/cnpg/user/starfrag-tarot
+        property: password

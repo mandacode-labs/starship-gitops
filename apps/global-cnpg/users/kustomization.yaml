@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - admin.yaml
   - traditional-saju.yaml
+  - starfrag-tarot.yaml

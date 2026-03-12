@@ -307,6 +307,13 @@ cluster:
       superuser: false
       passwordSecret:
         name: cnpg-user-traditional-saju
+    - name: starfrag-tarot
+      ensure: present
+      comment: Application user
+      login: true
+      superuser: false
+      passwordSecret:
+        name: cnpg-user-starfrag-tarot
     # - name: dante
     #   ensure: present
     #   comment: Dante Alighieri
@@ -594,6 +601,11 @@ databases:
   - name: traditional-saju
     ensure: present
     owner: traditional-saju
+    encoding: UTF8
+    connectionLimit: -1
+  - name: starfrag-tarot
+    ensure: present
+    owner: starfrag-tarot
     encoding: UTF8
     connectionLimit: -1
   # - name: app                      # -- Name of the database to be created.
