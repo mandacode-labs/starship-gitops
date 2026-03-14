@@ -10,6 +10,4 @@ spec:
   target:
     configMap:
       key: ca.crt
-    namespaceSelector:
-      matchLabels:
-        kubernetes.io/metadata.name: default
+    namespaceSelector: {}
