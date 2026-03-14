@@ -9,9 +9,11 @@ spec:
         universalAuthCredentials:
           clientId:
             name: infisical-eso
+            namespace: default
             key: clientId
           clientSecret:
             name: infisical-eso
+            namespace: default
             key: clientSecret
       hostAPI: https://infisical.console.mandacode.com
       secretsScope:
