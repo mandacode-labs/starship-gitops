@@ -4,6 +4,4 @@ kind: Kustomization
 namespace: infisical
 
 resources:
-  - certificate.yaml
-  - route.yaml
-  - app-secret.yaml
+  - db-user.yaml

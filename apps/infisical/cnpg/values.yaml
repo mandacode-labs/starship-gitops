@@ -1,0 +1,146 @@
+# -- Override the name of the chart
+nameOverride: "infisical-cnpg-cluster"
+# -- Override the full name of the chart
+fullnameOverride: "infisical-cnpg-cluster"
+# -- Override the namespace of the chart
+namespaceOverride: ""
+
+###
+# -- Type of the CNPG database. Available types:
+# * `postgresql`
+# * `postgis`
+# * `timescaledb`
+type: postgresql
+
+version:
+  # -- PostgreSQL major version to use
+  postgresql: "16"
+
+###
+# -- Cluster mode of operation. Available modes:
+# * `standalone` - default mode. Creates new or updates an existing CNPG cluster.
+# * `replica` - Creates a replica cluster from an existing CNPG cluster.
+# * `recovery` - Same as standalone but creates a cluster from a backup, object store or via pg_basebackup.
+mode: standalone
+
+cluster:
+  # -- Number of instances
+  instances: 2
+
+  storage:
+    size: 10Gi
+    storageClass: ""
+
+  walStorage:
+    enabled: true
+    size: 2Gi
+    storageClass: ""
+
+  # -- Resources requirements of every generated Pod.
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+
+  # -- Affinity/Anti-affinity rules for Pods.
+  affinity:
+    topologyKey: topology.kubernetes.io/zone
+
+  # -- When this option is enabled, the operator will use the SuperuserSecret to update the postgres user password.
+  enableSuperuserAccess: true
+  superuserSecret: ""
+
+  # -- Allow to disable PDB, mainly useful for upgrade of single-instance clusters or development purposes
+  enablePDB: true
+
+  # -- Declarative management of roles
+  roles:
+    - name: app
+      ensure: present
+      comment: Infisical application user
+      login: true
+      superuser: false
+      passwordSecret:
+        name: db-user-app
+
+  monitoring:
+    enabled: false
+    podMonitor:
+      enabled: false
+
+  postgresql:
+    parameters: {}
+    synchronous: {}
+    pg_hba: []
+    pg_ident: []
+    shared_preload_libraries: []
+
+  # -- BootstrapInitDB configuration
+  initdb:
+    database: infisical
+    owner: app
+    encoding: UTF8
+
+  # -- Configure the metadata of the generated service account
+  serviceAccountTemplate:
+    metadata:
+      annotations:
+        eks.amazonaws.com/role-arn: "arn:aws:iam::273216125096:role/StarshipInfisicalCNPGClusterBackup"
+
+  console:
+    enabled: false
+
+backups:
+  enabled: true
+  endpointURL: ""
+  endpointCA:
+    create: false
+    name: ""
+    key: ""
+    value: ""
+  destinationPath: ""
+  provider: s3
+  s3:
+    region: "ap-northeast-2"
+    bucket: "starship-infisical"
+    path: "/db-backup/v1/"
+    accessKey: ""
+    secretKey: ""
+    inheritFromIAMRole: true
+  wal:
+    compression: gzip
+    encryption: AES256
+    maxParallel: 1
+  data:
+    compression: gzip
+    encryption: AES256
+    jobs: 2
+  scheduledBackups:
+    - name: daily-backup
+      schedule: "0 0 0 * * *"
+      backupOwnerReference: self
+      method: barmanObjectStore
+  retentionPolicy: "30d"
+
+replica:
+  self: ""
+  primary: ""
+
+##
+# Database management configuration
+databases:
+  - name: infisical
+    ensure: present
+    owner: app
+    encoding: UTF8
+    connectionLimit: -1
+
+imageCatalog:
+  create: false
+  images: []
+
+# -- List of PgBouncer poolers
+poolers: []
