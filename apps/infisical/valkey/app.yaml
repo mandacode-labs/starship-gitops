@@ -1,28 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: infisical
+  name: infisical-valkey
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: infisical
   sources:
-    - repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
-      chart: infisical
-      targetRevision: "0.4.2"
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: valkey
+      targetRevision: "0.9.3"
       helm:
         valueFiles:
-          - $values/apps/infisical/values.yaml
+          - $values/apps/infisical/valkey/values.yaml
 
     - repoURL: https://github.com/mandacode-labs/starship-gitops.git
       targetRevision: main
       ref: values
-
-    # Kustomization
-    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
-      targetRevision: main
-      path: apps/infisical/resources
 
   destination:
     server: https://kubernetes.default.svc

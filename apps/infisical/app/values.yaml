@@ -74,9 +74,9 @@ backendEnvironmentVariables:
   ## @param backendEnvironmentVariables.INVITE_ONLY_SIGNUP To disable account creation from the login page (invites only)
   ##
   INVITE_ONLY_SIGNUP: false
-  ## @param backendEnvironmentVariables.REDIS_URL - Using built-in Redis
+  ## @param backendEnvironmentVariables.REDIS_URL - Using external Valkey
   ##
-  REDIS_URL: "redis://redis-master:6379"
+  REDIS_URL: "redis://valkey.infisical.svc.cluster.local:6379"
 
 ## @section MongoDB parameters - DISABLED (using CNPG PostgreSQL)
 ##
@@ -107,9 +107,4 @@ mailhog:
 ## @skip redis
 ##
 redis:
-  name: "redis"
-  fullnameOverride: "redis"
-  enabled: true
-  architecture: standalone
-  auth:
-    enabled: false
+  enabled: false
