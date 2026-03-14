@@ -21,3 +21,4 @@ spec:
   sourceRepos:
     - https://github.com/mandacode-labs/starship-gitops.git
     - oci://quay.io/jetstack/charts/cert-manager
+    - oci://quay.io/jetstack/charts/trust-manager
