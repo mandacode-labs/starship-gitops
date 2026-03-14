@@ -8,7 +8,7 @@ metadata:
 spec:
   project: infisical
   sources:
-    - repoURL: https://charts.bitnami.com/bitnami
+    - repoURL: https://valkey.io/valkey-helm/
       chart: valkey
       targetRevision: "0.9.3"
       helm:

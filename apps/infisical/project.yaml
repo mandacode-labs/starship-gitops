@@ -18,3 +18,5 @@ spec:
   sourceRepos:
     - https://github.com/mandacode-labs/starship-gitops.git
     - https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
+    - https://cloudnative-pg.github.io/charts
+    - https://valkey.io/valkey-helm/
