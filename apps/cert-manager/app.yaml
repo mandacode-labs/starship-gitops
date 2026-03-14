@@ -30,6 +30,10 @@ spec:
       targetRevision: main
       path: apps/cert-manager/issuers
 
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      path: apps/cert-manager/trust-manager
+
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
