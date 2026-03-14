@@ -19,6 +19,11 @@ spec:
       targetRevision: main
       ref: values
 
+    # Kustomization
+    - repoURL: https://github.com/mandacode-labs/starship-gitops.git
+      targetRevision: main
+      path: apps/infisical/valkey
+
   destination:
     server: https://kubernetes.default.svc
     namespace: infisical

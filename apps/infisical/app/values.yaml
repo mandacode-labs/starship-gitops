@@ -47,7 +47,12 @@ backend:
   ##
   affinity: {}
   ## @param backend.kubeSecretRef Backend secret resource reference name (containing required [backend configuration variables](https://infisical.com/docs/self-hosting/configuration/envars))
-  ## This secret should contain: ENCRYPTION_KEY, AUTH_SECRET, SITE_URL, DB_CONNECTION_URI
+  ## The secret (infisical-secrets) should contain:
+  ##   - AUTH_SECRET: Random 32 byte base64 string (openssl rand -base64 32)
+  ##   - ENCRYPTION_KEY: Random 16 byte hex string (openssl rand -hex 16)
+  ##   - SITE_URL: https://infisical.console.mandacode.com
+  ##   - DB_CONNECTION_URI: postgresql://app:<password>@infisical-cnpg-cluster-rw.infisical.svc.cluster.local:5432/infisical
+  ##   - REDIS_URL: redis://:<password>@valkey.infisical.svc.cluster.local:6379
   ##
   kubeSecretRef: "infisical-secrets"
   ## Backend service
@@ -65,18 +70,13 @@ backend:
 
 ## Backend variables configuration
 ## Documentation : https://infisical.com/docs/self-hosting/configuration/envars
-## Note: Most variables are now provided via kubeSecretRef (infisical-secrets)
+## Note: Variables are provided via kubeSecretRef (infisical-secrets)
+## The secret contains: AUTH_SECRET, ENCRYPTION_KEY, SITE_URL, DB_CONNECTION_URI, REDIS_URL
 ##
-backendEnvironmentVariables:
-  ## @param backendEnvironmentVariables.SITE_URL Absolute URL including the protocol
-  ##
-  SITE_URL: "https://infisical.console.mandacode.com"
-  ## @param backendEnvironmentVariables.INVITE_ONLY_SIGNUP To disable account creation from the login page (invites only)
-  ##
-  INVITE_ONLY_SIGNUP: false
-  ## @param backendEnvironmentVariables.REDIS_URL - Using external Valkey
-  ##
-  REDIS_URL: "redis://valkey.infisical.svc.cluster.local:6379"
+backendEnvironmentVariables: {}
+  # SITE_URL: "https://infisical.console.mandacode.com"
+  # INVITE_ONLY_SIGNUP: false
+  # REDIS_URL: "redis://valkey.infisical.svc.cluster.local:6379"
 
 ## @section MongoDB parameters - DISABLED (using CNPG PostgreSQL)
 ##
