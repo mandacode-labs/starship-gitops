@@ -1,7 +1,7 @@
 apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
-  name: infisical
+  name: infisical-serengeti-prod
 spec:
   provider:
     infisical:
@@ -13,4 +13,7 @@ spec:
           clientSecret:
             name: infisical-eso
             key: clientSecret
-      hostAPI: https://infisical.console.mandacode.com/api
+      hostAPI: https://infisical.console.mandacode.com
+      secretsScope:
+        projectSlug: serengeti
+        environmentSlug: prod
