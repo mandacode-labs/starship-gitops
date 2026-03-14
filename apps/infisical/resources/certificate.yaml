@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: infisical-tls
+  namespace: infisical
+spec:
+  commonName: infisical-backend.infisical.svc.cluster.local
+  dnsNames:
+    - infisical-backend.infisical.svc.cluster.local
+    - infisical-backend.infisical.svc
+    - infisical-backend
+  secretName: infisical-tls
+  duration: 8760h
+  renewBefore: 720h
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: starship-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
