@@ -5,3 +5,4 @@ namespace: external-secrets
 
 resources:
   - aws-secrets-manager.yaml
+  - infisical.yaml

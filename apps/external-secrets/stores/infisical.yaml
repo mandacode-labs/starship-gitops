@@ -1,0 +1,16 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: infisical
+spec:
+  provider:
+    infisical:
+      auth:
+        universalAuthCredentials:
+          clientId:
+            name: infisical-eso
+            key: clientId
+          clientSecret:
+            name: infisical-eso
+            key: clientSecret
+      hostAPI: https://infisical.console.mandacode.com/api
