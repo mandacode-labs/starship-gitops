@@ -19,3 +19,25 @@ spec:
       secretsScope:
         projectSlug: serengeti-0c0-a
         environmentSlug: prod
+---
+apiVersion: external-secrets.io/v1
+kind: ClusterSecretStore
+metadata:
+  name: infisical-mandacode-prod
+spec:
+  provider:
+    infisical:
+      auth:
+        universalAuthCredentials:
+          clientId:
+            name: infisical-eso
+            namespace: default
+            key: clientId
+          clientSecret:
+            name: infisical-eso
+            namespace: default
+            key: clientSecret
+      hostAPI: https://infisical.console.mandacode.com
+      secretsScope:
+        projectSlug: mandacode-tcnl
+        environmentSlug: prod
