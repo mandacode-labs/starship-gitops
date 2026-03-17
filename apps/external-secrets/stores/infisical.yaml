@@ -1,6 +1,28 @@
 apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
+  name: infisical-mandacode-prod
+spec:
+  provider:
+    infisical:
+      auth:
+        universalAuthCredentials:
+          clientId:
+            name: infisical-eso
+            namespace: default
+            key: clientId
+          clientSecret:
+            name: infisical-eso
+            namespace: default
+            key: clientSecret
+      hostAPI: https://infisical.console.mandacode.com
+      secretsScope:
+        projectSlug: mandacode-tcnl
+        environmentSlug: prod
+---
+apiVersion: external-secrets.io/v1
+kind: ClusterSecretStore
+metadata:
   name: infisical-serengeti-prod
 spec:
   provider:
@@ -23,7 +45,7 @@ spec:
 apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
-  name: infisical-mandacode-prod
+  name: infisical-starfrag-prod
 spec:
   provider:
     infisical:
@@ -39,5 +61,5 @@ spec:
             key: clientSecret
       hostAPI: https://infisical.console.mandacode.com
       secretsScope:
-        projectSlug: mandacode-tcnl
+        projectSlug: starfrag-o-ft2
         environmentSlug: prod
