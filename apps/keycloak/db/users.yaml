@@ -8,7 +8,7 @@ metadata:
 spec:
   refreshInterval: 24h
   secretStoreRef:
-    name: aws-secret-manager
+    name: infisical-mandacode-prod
     kind: ClusterSecretStore
   target:
     name: db-user-app
@@ -20,5 +20,4 @@ spec:
   data:
     - secretKey: password
       remoteRef:
-        key: starship/keycloak/database/user/app
-        property: password
+        key: /keycloak/cnpg/users/app/password
