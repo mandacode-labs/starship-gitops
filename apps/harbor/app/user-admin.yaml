@@ -8,7 +8,7 @@ metadata:
 spec:
   refreshInterval: 24h
   secretStoreRef:
-    name: aws-secret-manager
+    name: infisical-mandacode-prod
     kind: ClusterSecretStore
   target:
     name: harbor-user-admin
@@ -20,9 +20,7 @@ spec:
   data:
     - secretKey: username
       remoteRef:
-        key: starship/harbor/user/admin
-        property: username
+        key: /harbor/users/admin/username
     - secretKey: password
       remoteRef:
-        key: starship/harbor/user/admin
-        property: password
+        key: /harbor/users/admin/password
