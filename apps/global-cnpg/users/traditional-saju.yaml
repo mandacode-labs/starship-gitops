@@ -8,7 +8,7 @@ metadata:
 spec:
   refreshInterval: 24h
   secretStoreRef:
-    name: aws-secret-manager
+    name: infisical-mandacode-prod
     kind: ClusterSecretStore
   target:
     name: cnpg-user-traditional-saju
@@ -20,5 +20,4 @@ spec:
   data:
     - secretKey: password
       remoteRef:
-        key: starship/global-database/cnpg/user/traditional-saju
-        property: password
+        key: /global-database/users/admin/password
