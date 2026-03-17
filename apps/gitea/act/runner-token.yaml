@@ -8,7 +8,7 @@ metadata:
 spec:
   refreshInterval: 24h
   secretStoreRef:
-    name: aws-secret-manager
+    name: infisical-mandacode-prod
     kind: ClusterSecretStore
   target:
     name: gitea-runner-token
@@ -19,5 +19,4 @@ spec:
   data:
     - secretKey: token
       remoteRef:
-        key: starship/gitea/runner
-        property: token
+        key: /gitea/token/runner/act-runner
