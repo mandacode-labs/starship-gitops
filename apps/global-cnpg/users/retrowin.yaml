@@ -1,7 +1,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: cnpg-user-traditional-saju
+  name: cnpg-user-retrowin
   namespace: global-database
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
@@ -11,13 +11,13 @@ spec:
     name: infisical-mandacode-prod
     kind: ClusterSecretStore
   target:
-    name: cnpg-user-traditional-saju
+    name: cnpg-user-retrowin
     creationPolicy: Owner
     template:
       data:
-        username: traditional-saju
+        username: retrowin
         password: "{{ .password }}"
   data:
     - secretKey: password
       remoteRef:
-        key: /global-database/users/traditional-saju/password
+        key: /global-database/users/retrowin/password
