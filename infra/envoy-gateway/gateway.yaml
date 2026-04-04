@@ -101,3 +101,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: starfrag-retrowin-https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.retrowin.starfrag.co"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: starfrag-retrowin-tls
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: All
